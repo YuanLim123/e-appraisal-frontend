@@ -66,7 +66,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
           <li>
-            <RouterLink :to="{ name: 'home' }" class="sidebar-link">
+            <RouterLink :to="{ name: 'dashboard' }" class="sidebar-link">
               <span class="sidebar-link-label">Dashboard</span>
             </RouterLink>
           </li>
