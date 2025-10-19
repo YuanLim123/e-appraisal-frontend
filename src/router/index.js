@@ -22,13 +22,13 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      //beforeEnter: guest,
+      beforeEnter: guest,
       component: () => import("@/LoginView.vue"),
     },
     {
       path: "/",
       name: "dash",
-      //beforeEnter: auth,
+      beforeEnter: auth,
       component: () => import("@/BaseLayout.vue"),
       children: [
         {

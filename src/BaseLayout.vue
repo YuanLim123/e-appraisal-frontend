@@ -1,5 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
+import { useAuth } from '@/stores/auth';
+import { onMounted } from 'vue';
+import { initFlowbite } from 'flowbite';
+
+onMounted(() => {
+  initFlowbite();
+});
+const auth = useAuth();
 </script>
 <template>
   <div class="antialiased bg-gray-50">
@@ -102,6 +110,7 @@ import { RouterLink, RouterView } from "vue-router";
               <li>
                 <a
                   href="#"
+                  @click="auth.logout()"
                   class="block py-2 px-4 text-sm hover:bg-gray-10"
                   >Sign out</a
                 >

@@ -19,14 +19,16 @@ export const useAuth = defineStore("auth", () => {
     router.push({ name: "dashboard" });
   }
 
-  function destroyTokenAndRedirectTo(routeName) {
+  function destroyTokenAndRedirectTo(routeName = "login") {
     setAccessToken(null);
     router.push({ name: routeName });
   }
 
   async function logout() {
-    return window.axios.post("auth/logout").finally(() => {
-      destroyTokenAndRedirectTo("register");
+    const userResult = confirm("Are you sure you want to logout?");
+    if (!userResult) return;
+    return window.axios.post('logout').finally(() => {
+      destroyTokenAndRedirectTo();
     });
   }
 
