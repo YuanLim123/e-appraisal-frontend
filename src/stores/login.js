@@ -32,7 +32,15 @@ export const useLogin = defineStore("login", () => {
       })
       .catch((error) => {
         if (error.response.status === 422) {
-          errors.value = error.response.data.errors;
+          const errorData = error.response.data;
+
+          if (errorData.errors) {
+            errors.value = errorData.errors;
+          } else {
+             errors.value = errorData.message
+          }
+          
+          console.log(errors.value)
         }
       })
       .finally(() => {
