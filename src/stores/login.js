@@ -17,6 +17,10 @@ export const useLogin = defineStore("login", () => {
  
     errors.value = {};
   }
+
+  function resetError() {
+    errors.value = {};
+  }
  
   async function handleSubmit() {
     if (loading.value) return;
@@ -49,5 +53,5 @@ export const useLogin = defineStore("login", () => {
       });
   }
  
-  return { form, errors, loading, resetForm, handleSubmit };
+  return { form, errors, loading, resetForm, resetError, handleSubmit };
 });
