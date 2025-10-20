@@ -141,6 +141,11 @@ const auth = useAuth();
             </RouterLink>
           </li>
           <li>
+            <RouterLink :to="{ name: 'users.index' }" class="sidebar-link">
+              <span class="sidebar-link-label">Users</span>
+            </RouterLink>
+          </li>
+          <li>
             <a
               href="#"
               class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 group"

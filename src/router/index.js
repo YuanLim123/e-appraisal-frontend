@@ -41,6 +41,12 @@ const router = createRouter({
           name: "register",
           component: () => import("@/views/Auth/RegisterView.vue"),
         },
+        {
+          path: "users",
+          name: "users.index",
+          beforeEnter: auth,
+          component: () => import("@/views/User/IndexView.vue"),
+        },
       ],
     },
   ],
