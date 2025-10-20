@@ -131,24 +131,9 @@ const auth = useAuth();
       <div class="overflow-y-auto py-5 px-3 h-full bg-white">
         <ul class="space-y-2">
           <li>
-            <RouterLink :to="{ name: 'dashboard' }" class="sidebar-link">
-              <span class="sidebar-link-label">Dashboard</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink :to="{ name: 'register' }" class="sidebar-link">
-              <span class="sidebar-link-label">Register</span>
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink :to="{ name: 'users.index' }" class="sidebar-link">
-              <span class="sidebar-link-label">Users</span>
-            </RouterLink>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 group"
+            <RouterLink
+              :to="{ name: 'dashboard' }" 
+              class="sidebar-link"
             >
               <svg
                 aria-hidden="true"
@@ -160,8 +145,44 @@ const auth = useAuth();
                 <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
               </svg>
-              <span class="ml-3">Overview</span>
-            </a>
+              <span class="ml-3">Dashboard</span>
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink
+              :to="{ name: 'register' }" 
+              class="sidebar-link"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+              </svg>
+              <span class="ml-3">Register</span>
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink
+              :to="{ name: 'users.index' }" 
+              class="sidebar-link"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+              </svg>
+              <span class="ml-3">User</span>
+            </RouterLink>
           </li>
           <li>
             <button
@@ -351,7 +372,7 @@ const auth = useAuth();
     </aside>
 
     <main class="p-4 md:ml-64 h-screen pt-20">
-        <router-view></router-view>
+        <RouterView />
     </main>
   </div>
 </template>
