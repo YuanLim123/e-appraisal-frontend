@@ -47,6 +47,12 @@ const router = createRouter({
           beforeEnter: auth,
           component: () => import("@/views/User/IndexView.vue"),
         },
+        {
+          path: "users/create",
+          name: "users.create",
+          beforeEnter: auth,
+          component: () => import("@/views/User/CreateView.vue"),
+        },
       ],
     },
   ],

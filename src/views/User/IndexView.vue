@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from "vue";
 import { useUser } from "@/stores/user";
+import { RouterLink } from "vue-router";
 
 const store = useUser();
 
@@ -9,6 +10,17 @@ onMounted(() => {
 });
 </script>
 <template>
+  <div class="flex justify-end rounded-md mb-4">
+  <RouterLink
+  :to="{ name: 'users.create' }" 
+  aria-current="page" 
+  class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 ">
+    Add User
+  </RouterLink>
+  <a href="#" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 ">
+    Messages
+  </a>
+</div>
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
