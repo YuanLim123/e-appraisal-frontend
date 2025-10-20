@@ -6,13 +6,25 @@ export const useUser = defineStore("user", () => {
   const loading = ref(false);
   const users = ref([]);
   const form = reactive({
-    plate_number: "",
-    description: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    phone: "",
+    join_at: "",
+    role_id: "",
+    departments: [],
   });
 
   function resetForm() {
-    form.plate_number = "";
-    form.description = "";
+    form.first_name = "";
+    form.last_name = "";
+    form.email = "";
+    form.password = "";
+    form.phone = "";
+    form.join_at = "";
+    form.role_id = "";
+    form.departments = [];
 
     errors.value = {};
   }
