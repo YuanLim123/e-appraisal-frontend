@@ -17,11 +17,11 @@ export const useUser = defineStore("user", () => {
     errors.value = {};
   }
 
-  function getUsers() {
-    return window.axios.get("users").then((response) => {
-      console.log(response.data.data);
-      users.value = response.data.data;
-      return response.data.data;
+  function getUsers(page = 1) {
+    return window.axios.get("users", { params: { page } }).then((response) => {
+      console.log(response.data)
+      users.value = response.data;
+      return response.data;
     });
   }
 
