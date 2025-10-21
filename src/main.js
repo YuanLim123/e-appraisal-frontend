@@ -14,6 +14,7 @@ import { TailwindPagination } from 'laravel-vue-pagination';
 import Multiselect from 'vue-multiselect';
 import OpenedEyeIcon from "@/components/OpenedEyeIcon.vue";
 import ClosedEyeIcon from "@/components/ClosedEyeIcon.vue";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 const app = createApp(App);
 
@@ -26,5 +27,6 @@ app.component("TailwindPagination", TailwindPagination);
 app.component("Multiselect", Multiselect);
 app.component("OpenedEyeIcon", OpenedEyeIcon);
 app.component("ClosedEyeIcon", ClosedEyeIcon);
+app.component('pulse-loader', PulseLoader);
 
 app.mount("#app");

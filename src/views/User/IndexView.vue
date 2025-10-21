@@ -22,6 +22,9 @@ onMounted(() => {
   </a>
 </div>
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div v-show="store.loading" class="absolute inset-0 flex items-center justify-center">
+      <pulse-loader :loading="store.loading"></pulse-loader>
+    </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>

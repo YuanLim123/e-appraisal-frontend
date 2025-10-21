@@ -42,11 +42,15 @@ export const useUser = defineStore("user", () => {
   }
 
   function getUsers(page = 1) {
-    return window.axios.get("users", { params: { page } }).then((response) => {
-      console.log(response.data);
-      users.value = response.data;
-      return response.data;
-    });
+    loading.value = true;
+    window.axios
+      .get("users", { params: { page } })
+      .then((response) => {
+        users.value = response.data;
+      })
+      .finally(() => {
+        loading.value = false;
+      });
   }
 
   function handleSubmit() {
