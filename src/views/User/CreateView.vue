@@ -26,6 +26,9 @@ const hasEmptyRoles = computed(() => roles.value.length < 1);
 watch(
   () => userStore.form.position_id,
   (newVal) => {
+    // we extract only id from form.position_id at handle submit
+    // so we need to check if the form.position_id.roles property is not empty
+    // before copying to the roles ref
     if (newVal && newVal.roles) {
       roles.value = [...newVal.roles];
     } else {
