@@ -6,7 +6,6 @@ export const usePosition = defineStore("position", () => {
 
   function getPositions() {
     return window.axios.get("hr/positions").then((response) => {
-      console.log(response.data);
       positions.value = response.data.data;
       return response.data;
     });

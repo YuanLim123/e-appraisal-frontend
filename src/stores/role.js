@@ -19,7 +19,6 @@ export const useRole = defineStore("role", () => {
 
   function getRoles() {
     return window.axios.get("hr/roles").then((response) => {
-      console.log(response.data);
       roles.value = response.data.data;
       return response.data;
     });

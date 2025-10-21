@@ -17,8 +17,8 @@ export const useUser = defineStore("user", () => {
     join_at: "",
     role_id: "",
     position_id: "",
-    employee_num: "",
-    login_enabled: false,
+    employee_no: "",
+    is_login_enabled: false,
     departments: [],
   });
 
@@ -34,8 +34,8 @@ export const useUser = defineStore("user", () => {
     form.join_at = "";
     form.role_id = "";
     form.position_id = "";
-    form.employee_num = "";
-    form.login_enabled = false;
+    form.employee_no = "";
+    form.is_login_enabled = false;
     form.departments = [];
 
     errors.value = {};
@@ -49,6 +49,43 @@ export const useUser = defineStore("user", () => {
     });
   }
 
+  function handleSubmit() {
+    if (loading.value) return;
+
+    loading.value = true;
+    errors.value = {};
+
+    // extract only ids to submit
+    form.position_id = form.position_id ? form.position_id.id : "";
+    form.role_id = form.role_id ? form.role_id.id : "";
+    form.departments = form.departments.map((dept) => dept.id);
+
+    window.axios
+      .post("hr/users", form)
+      .then((response) => {
+        alert(response.data.message);
+        resetForm();
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 422) {
+          const errorData = error.response.data;
+
+          if (errorData.errors) {
+            errors.value = errorData.errors;
+          } else {
+            errors.value = errorData.message;
+          }
+
+          console.log(errors.value);
+        }
+      })
+      .finally(() => {
+        form.password = "";
+        loading.value = false;
+      });
+  }
+
   return {
     form,
     errors,
@@ -56,5 +93,6 @@ export const useUser = defineStore("user", () => {
     users,
     resetForm,
     getUsers,
+    handleSubmit,
   };
 });

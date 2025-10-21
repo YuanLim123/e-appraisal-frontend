@@ -19,7 +19,6 @@ export const useDepartment = defineStore("department", () => {
 
   function getDepartments() {
     return window.axios.get("hr/departments").then((response) => {
-      console.log(response.data);
       departments.value = response.data.data;
       return response.data;
     });
