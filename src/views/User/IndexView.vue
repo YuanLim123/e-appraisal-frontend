@@ -55,8 +55,10 @@ onMounted(() => {
           <td class="px-6 py-4">{{ user.employee_no }}</td>
           <td class="px-6 py-4">{{ user.join_at }}</td>
           <td class="px-6 py-4">
-            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >Edit</a
+            <RouterLink
+              :to="{ name: 'users.show', params: { id: user.id } }"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >Edit</RouterLink
             >
           </td>
         </tr>

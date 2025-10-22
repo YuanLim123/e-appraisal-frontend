@@ -5,6 +5,7 @@ export const useUser = defineStore("user", () => {
   const errors = reactive({});
   const loading = ref(false);
   const users = ref([]);
+  const user = ref();
   const form = reactive({
     first_name: "",
     last_name: "",
@@ -41,12 +42,28 @@ export const useUser = defineStore("user", () => {
     errors.value = {};
   }
 
+  function resetUser() {
+    user.value = null;
+  }
+
   function getUsers(page = 1) {
     loading.value = true;
     window.axios
       .get("users", { params: { page } })
       .then((response) => {
         users.value = response.data;
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
+  function getUser(user_id) {
+    loading.value = true;
+    window.axios
+      .get(`users/${user_id}`)
+      .then((response) => {
+        user.value = response.data.data;
       })
       .finally(() => {
         loading.value = false;
@@ -95,8 +112,11 @@ export const useUser = defineStore("user", () => {
     errors,
     loading,
     users,
+    user,
     resetForm,
+    resetUser,
     getUsers,
+    getUser,
     handleSubmit,
   };
 });

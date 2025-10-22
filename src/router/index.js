@@ -48,6 +48,12 @@ const router = createRouter({
           component: () => import("@/views/User/IndexView.vue"),
         },
         {
+          path: "users/:id",
+          name: "users.show",
+          beforeEnter: auth,
+          component: () => import("@/views/User/ShowView.vue"),
+        },
+        {
           path: "users/create",
           name: "users.create",
           beforeEnter: auth,
