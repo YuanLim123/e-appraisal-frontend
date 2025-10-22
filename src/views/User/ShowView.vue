@@ -103,5 +103,5 @@ onBeforeUnmount(store.resetUser);
       </div>
     </div>
   </section>      
-  <AppraisalRecordSection />
+  <AppraisalRecordSection :appraisalRecords="store.user?.appraisal_records"/>
 </template>

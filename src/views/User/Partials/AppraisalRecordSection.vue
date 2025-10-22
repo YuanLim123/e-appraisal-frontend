@@ -1,17 +1,48 @@
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps(['appraisalRecords']);
+
+const hasEmptyRecords = computed(() => {
+  return !props.appraisalRecords || props.appraisalRecords.length === 0;
+});
+
+</script>
 <template>
-  <section class="bg-red-500">
-    <h3>Appraisal Record</h3>
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+  <section class="bg-white py-4 px-4 max-w-3xl">
+    <h2 class="mb-2">Appraisal Record</h2>
+    <table class="w-full text-sm text-left rtl:text-right">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-100">
         <tr>
-          <th scope="col" class="px-6 py-3">Full Name</th>
-          <th scope="col" class="px-6 py-3">Department</th>
-          <th scope="col" class="px-6 py-3">Employee No</th>
-          <th scope="col" class="px-6 py-3">Join Date</th>
-          <th scope="col" class="px-6 py-3">Action</th>
+          <th scope="col" class="px-3 py-3">Type</th>
+          <th scope="col" class="px-3 py-3">Status</th>
+          <th scope="col" class="px-3 py-3">Purpose</th>
+          <th scope="col" class="px-3 py-3">Review By</th>
+          <th scope="col" class="px-3 py-3">Current Approver</th>
+          <th scope="col" class="px-3 py-3">Action</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        <tr v-if="hasEmptyRecords">
+          <td colspan="6" class="text-center px-3 py-4 text-gray-500">
+            No appraisal records found.
+          </td>
+        </tr>
+        <tr
+          v-for="record in props.appraisalRecords "
+          :key="record.id"
+          class="odd:bg-white even:bg-gray-50 border-b border-gray-200"
+        >
+          <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap">
+            {{ record?.type }}
+          </th>
+          <td class="px-3 py-4">{{ record?.status }}</td>
+          <td class="px-3 py-4">{{ record?.purpose }}</td>
+          <td class="px-3 py-4">{{ record?.appraiser }}</td>
+          <td class="px-3 py-4">{{ record?.current_approver }}</td>
+          <td class="px-3 py-4">View</td>
+        </tr>
+      </tbody>
     </table>
   </section>
 </template>
