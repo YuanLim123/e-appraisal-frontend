@@ -23,6 +23,25 @@ export const useUser = defineStore("user", () => {
     departments: [],
   });
 
+  const searchForm = reactive({
+    name: "",
+    employee_no: "",
+    department_id: "",
+    position_id: "",
+    role_id: "",
+    join_at: "",
+  });
+
+  function clearSearchForm() {
+    searchForm.name = "";
+    searchForm.employee_no = "";
+    searchForm.department_id = "";
+    searchForm.position_id = "";
+    searchForm.role_id = "";
+    searchForm.join_before = "";
+    searchForm.join_after = "";
+  }
+
   function resetForm() {
     form.first_name = "";
     form.last_name = "";
@@ -47,9 +66,19 @@ export const useUser = defineStore("user", () => {
   }
 
   function getUsers(page = 1) {
+
+    searchForm.position_id = searchForm.position_id ? searchForm.position_id.id : "";
+    searchForm.role_id = searchForm.role_id ? searchForm.role_id.id : "";
+    searchForm.department_id = searchForm.department_id ? searchForm.department_id.id : "";
+
     loading.value = true;
     window.axios
-      .get("users", { params: { page } })
+      .get("users", {
+        params: {
+          page:page,
+          ...searchForm,
+        },
+      })
       .then((response) => {
         users.value = response.data;
       })
@@ -113,6 +142,8 @@ export const useUser = defineStore("user", () => {
     loading,
     users,
     user,
+    searchForm,
+    clearSearchForm,
     resetForm,
     resetUser,
     getUsers,

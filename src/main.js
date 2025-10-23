@@ -16,6 +16,7 @@ import OpenedEyeIcon from "@/components/OpenedEyeIcon.vue";
 import ClosedEyeIcon from "@/components/ClosedEyeIcon.vue";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import AppraisalRecordSection from "@/views/User/Partials/AppraisalRecordSection.vue";
+import UserSearch from "@/components/UserSearch.vue";
 
 const app = createApp(App);
 
@@ -30,5 +31,6 @@ app.component("OpenedEyeIcon", OpenedEyeIcon);
 app.component("ClosedEyeIcon", ClosedEyeIcon);
 app.component('pulse-loader', PulseLoader);
 app.component("AppraisalRecordSection", AppraisalRecordSection);
+app.component("UserSearch", UserSearch);
 
 app.mount("#app");

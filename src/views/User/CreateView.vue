@@ -15,6 +15,7 @@ const roles = ref([]);
 onMounted(() => {
   departmentStore.getDepartments();
   positionStore.getPositions();
+  userStore.loading = false;
 });
 
 onUnmounted(() => {

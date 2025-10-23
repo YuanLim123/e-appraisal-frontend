@@ -371,7 +371,7 @@ const auth = useAuth();
 
     </aside>
 
-    <main class="p-4 md:ml-64 pt-20">
+    <main class="p-4 md:ml-64 pt-20 md:h-screen">
         <RouterView />
     </main>
   </div>
