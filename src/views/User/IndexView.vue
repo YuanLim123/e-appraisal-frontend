@@ -74,7 +74,7 @@ const hasEmptyRecords = computed(() => {
           <td class="px-6 py-4">
             <RouterLink
               :to="{ name: 'users.show', params: { id: user.id } }"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              class="font-medium text-blue-600"
               >Edit</RouterLink
             >
           </td>

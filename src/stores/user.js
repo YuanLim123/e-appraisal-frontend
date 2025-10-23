@@ -1,5 +1,6 @@
 import { reactive, ref } from "vue";
 import { defineStore } from "pinia";
+import dayjs from 'dayjs';
 
 export const useUser = defineStore("user", () => {
   const errors = reactive({});
@@ -66,7 +67,6 @@ export const useUser = defineStore("user", () => {
   }
 
   function getUsers(page = 1) {
-
     searchForm.position_id = searchForm.position_id ? searchForm.position_id.id : "";
     searchForm.role_id = searchForm.role_id ? searchForm.role_id.id : "";
     searchForm.department_id = searchForm.department_id ? searchForm.department_id.id : "";
@@ -75,7 +75,7 @@ export const useUser = defineStore("user", () => {
     window.axios
       .get("users", {
         params: {
-          page:page,
+          page: page,
           ...searchForm,
         },
       })
@@ -93,6 +93,22 @@ export const useUser = defineStore("user", () => {
       .get(`users/${user_id}`)
       .then((response) => {
         user.value = response.data.data;
+        return response.data.data;
+      })
+      .then((data) => {
+        form.first_name = data.first_name;
+        form.last_name = data.last_name;
+        form.company_email = data.company_email;
+        form.email = data.email;
+        form.username = data.username;
+        form.office_phone = data.office_phone;
+        form.phone = data.phone;
+        form.join_at = dayjs(Date(data.join_at)).format('YYYY-MM-DD');
+        form.role_id = data.role;
+        form.position_id = data.position;
+        form.employee_no = data.employee_no;
+        form.is_login_enabled = data.is_login_enabled;
+        form.departments = data.department;
       })
       .finally(() => {
         loading.value = false;
