@@ -17,11 +17,18 @@ export const useUser = defineStore("user", () => {
     office_phone: "",
     phone: "",
     join_at: "",
-    role_id: "",
-    position_id: "",
     employee_no: "",
-    department_ids: [],
     is_login_enabled: false,
+
+    // data for ui
+    role: "",
+    position: "",
+    departments: [],
+
+    // data for api 
+    position_id: "",
+    role_id: "",
+    department_ids: [],
   });
 
   const searchForm = reactive({
@@ -53,10 +60,15 @@ export const useUser = defineStore("user", () => {
     form.office_phone = "";
     form.phone = "";
     form.join_at = "";
-    form.role_id = "";
-    form.position_id = "";
     form.employee_no = "";
     form.is_login_enabled = false;
+
+    form.role_id = "";
+    form.position_id = "";
+    form.department_ids = [];
+
+    form.role = "";
+    form.position = "";
     form.departments = [];
 
     errors.value = {};
@@ -104,8 +116,8 @@ export const useUser = defineStore("user", () => {
         form.office_phone = data.office_phone;
         form.phone = data.phone;
         form.join_at = dayjs(Date(data.join_at)).format("YYYY-MM-DD");
-        form.role_id = data.role;
-        form.position_id = data.position;
+        form.role = data.role;
+        form.position = data.position;
         form.employee_no = data.employee_no;
         form.is_login_enabled = data.is_login_enabled;
         form.departments = data.department;
@@ -122,9 +134,9 @@ export const useUser = defineStore("user", () => {
     errors.value = {};
 
     // extract only ids to submit
-    form.position_id = form.position_id ? form.position_id.id : "";
-    form.role_id = form.role_id ? form.role_id.id : "";
-    form.departments = form.departments.map((dept) => dept.id);
+    form.position_id = form.position ? form.position.id : "";
+    form.role_id = form.role ? form.role.id : "";
+    form.department_ids = form.departments.map((dept) => dept.id);
 
     window.axios
       .post("hr/users", form)
@@ -159,14 +171,15 @@ export const useUser = defineStore("user", () => {
     errors.value = {};
 
     // extract only ids to submit
-    form.position_id = form.position_id ? form.position_id.id : "";
-    form.role_id = form.role_id ? form.role_id.id : "";
-    form.departments = form.departments.map((dept) => dept.id);
+    form.position_id = form.position? form.position.id : "";
+    form.role_id = form.role ? form.role.id : "";
+    form.department_ids = form.departments.map((dept) => dept.id);
 
     window.axios
       .put(`hr/users/${user.id}`, form)
       .then((response) => {
         alert(response.data.message);
+        resetForm();
       })
       .catch((error) => {
         console.log(error);
@@ -183,7 +196,6 @@ export const useUser = defineStore("user", () => {
         }
       })
       .finally(() => {
-        getUser(user.id);
         loading.value = false;
       });
   }

@@ -25,16 +25,18 @@ onUnmounted(() => {
 const hasEmptyRoles = computed(() => roles.value.length < 1);
 
 watch(
-  () => userStore.form.position_id,
+  () => userStore.form.position,
   (newVal) => {
-    // we extract only id from form.position_id at handle submit
-    // so we need to check if the form.position_id.roles property is not empty
-    // before copying to the roles ref
-    if (newVal && newVal.roles) {
-      roles.value = [...newVal.roles];
-    } else {
-      roles.value = [];
-    }
+    // // we extract only id from form.position_id at handle submit
+    // // so we need to check if the form.position_id.roles property is not empty
+    // // before copying to the roles ref
+    // if (newVal && newVal.roles) {
+    //   roles.value = [...newVal.roles];
+    // } else {
+    //   roles.value = [];
+    // }
+
+    roles.value = [...newVal.roles];
   },
 );
 </script>
@@ -155,7 +157,7 @@ watch(
             <label for="role" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
             <Multiselect
               id="role"
-              v-model="userStore.form.role_id"
+              v-model="userStore.form.role"
               :options="roles"
               :close-on-select="true"
               :clear-on-select="true"
@@ -174,7 +176,7 @@ watch(
             >
             <Multiselect
               id="position"
-              v-model="userStore.form.position_id"
+              v-model="userStore.form.position"
               :options="positionStore.positions"
               :close-on-select="true"
               :clear-on-select="true"
