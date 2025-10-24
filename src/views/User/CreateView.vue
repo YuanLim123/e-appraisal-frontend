@@ -42,7 +42,7 @@ watch(
   <section>
     <div class="py-4 px-4 mx-auto max-w-2xl">
       <h2 class="mb-4 text-xl font-bold text-gray-900">Add a new User</h2>
-      <form @submit.prevent="userStore.handleSubmit" novalidate>
+      <form @submit.prevent="userStore.storeUser" novalidate>
         <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
           <div class="w-full">
             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900"

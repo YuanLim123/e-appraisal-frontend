@@ -1,6 +1,6 @@
 import { reactive, ref } from "vue";
 import { defineStore } from "pinia";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 export const useUser = defineStore("user", () => {
   const errors = reactive({});
@@ -20,8 +20,8 @@ export const useUser = defineStore("user", () => {
     role_id: "",
     position_id: "",
     employee_no: "",
+    department_ids: [],
     is_login_enabled: false,
-    departments: [],
   });
 
   const searchForm = reactive({
@@ -103,7 +103,7 @@ export const useUser = defineStore("user", () => {
         form.username = data.username;
         form.office_phone = data.office_phone;
         form.phone = data.phone;
-        form.join_at = dayjs(Date(data.join_at)).format('YYYY-MM-DD');
+        form.join_at = dayjs(Date(data.join_at)).format("YYYY-MM-DD");
         form.role_id = data.role;
         form.position_id = data.position;
         form.employee_no = data.employee_no;
@@ -115,7 +115,7 @@ export const useUser = defineStore("user", () => {
       });
   }
 
-  function handleSubmit() {
+  function storeUser() {
     if (loading.value) return;
 
     loading.value = true;
@@ -152,6 +152,42 @@ export const useUser = defineStore("user", () => {
       });
   }
 
+  function updateUser(user) {
+    if (loading.value) return;
+
+    loading.value = true;
+    errors.value = {};
+
+    // extract only ids to submit
+    form.position_id = form.position_id ? form.position_id.id : "";
+    form.role_id = form.role_id ? form.role_id.id : "";
+    form.departments = form.departments.map((dept) => dept.id);
+
+    window.axios
+      .put(`hr/users/${user.id}`, form)
+      .then((response) => {
+        alert(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 422) {
+          const errorData = error.response.data;
+
+          if (errorData.errors) {
+            errors.value = errorData.errors;
+          } else {
+            errors.value = errorData.message;
+          }
+
+          console.log(errors.value);
+        }
+      })
+      .finally(() => {
+        getUser(user.id);
+        loading.value = false;
+      });
+  }
+
   return {
     form,
     errors,
@@ -164,6 +200,7 @@ export const useUser = defineStore("user", () => {
     resetUser,
     getUsers,
     getUser,
-    handleSubmit,
+    storeUser,
+    updateUser,
   };
 });
