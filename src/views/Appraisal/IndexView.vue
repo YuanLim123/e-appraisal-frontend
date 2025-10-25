@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, computed } from "vue";
 import { useAppraisal } from "@/stores/appraisal";
+import { useRoute, RouterLink } from "vue-router";
 
 const numberOfApproversToShow = 5;
 const appraisalStore = useAppraisal();
@@ -86,7 +87,12 @@ const hasEmptyRecords = computed(() => {
             </div>
           </td>
           <td class="px-6 py-4">
-            <a href="#" class="font-medium text-blue-600">Edit</a>
+            <RouterLink
+              :to="{ name: 'appraisals.show', params: { id: appraisal.id } }"
+              class="font-medium text-blue-600"
+            >
+              Edit
+            </RouterLink>
           </td>
         </tr>
       </tbody>

@@ -71,6 +71,12 @@ const router = createRouter({
           beforeEnter: auth,
           component: () => import("@/views/Appraisal/IndexView.vue"),
         },
+        {
+          path: "appraisals/:id",
+          name: "appraisals.show",
+          beforeEnter: auth,
+          component: () => import("@/views/Appraisal/ShowView.vue"),
+        },
       ],
     },
   ],
