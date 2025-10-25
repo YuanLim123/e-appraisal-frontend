@@ -25,7 +25,7 @@ function handleSearch() {
 }
 </script>
 <template>
-  <div class="max-w-6xl">
+  <div class="max-w-6xl lg:max-w-full">
     <form @submit.prevent="handleSearch" novalidate>
       <div class="grid sm:grid-cols-1 sm:gap-6 md:grid-cols-2 md:gap-4">
         <div class="w-full flex items-center mb-4">
@@ -87,7 +87,7 @@ function handleSearch() {
           </Multiselect>
         </div>
         <div class="w-full flex items-center mb-2">
-          <label for="position" class="block mb-2 text-sm font-medium w-32 text-gray-900 mr-6"
+          <label for="role" class="block mb-2 text-sm font-medium w-32 text-gray-900 mr-6"
             >Role</label
           >
           <Multiselect
@@ -104,7 +104,7 @@ function handleSearch() {
           </Multiselect>
         </div>
         <div class="w-full flex items-center mb-2">
-          <label for="join_at" class="block mb-2 text-sm font-medium text-gray-900 w-32 mr-6"
+          <label for="join_before" class="block mb-2 text-sm font-medium text-gray-900 w-32 mr-6"
             >Join Before</label
           >
           <input
@@ -116,7 +116,7 @@ function handleSearch() {
           />
         </div>
         <div class="w-full flex items-center mb-2">
-          <label for="join_at" class="block mb-2 text-sm font-medium text-gray-900 w-32 mr-6"
+          <label for="join_after" class="block mb-2 text-sm font-medium text-gray-900 w-32 mr-6"
             >Join After</label
           >
           <input
