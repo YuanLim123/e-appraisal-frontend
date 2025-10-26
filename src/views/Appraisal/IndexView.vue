@@ -15,6 +15,15 @@ const hasEmptyRecords = computed(() => {
 });
 </script>
 <template>
+  <div class="flex justify-end mb-4">
+    <RouterLink
+      :to="{ name: 'appraisals.create' }"
+      aria-current="page"
+      class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+    >
+      Add Appraisal
+    </RouterLink>
+  </div>
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <div v-show="appraisalStore.loading" class="absolute inset-0 flex items-center justify-center">
       <pulse-loader :loading="appraisalStore.loading"></pulse-loader>

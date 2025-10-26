@@ -20,7 +20,7 @@ import UserSearch from "@/components/UserSearch.vue";
 import AppraiseeSection from "@/views/Appraisal/Partials/AppraiseeSection.vue";
 import AppraiserSection from "@/views/Appraisal/Partials/AppraiserSection.vue";
 import ApproverSection from "@/views/Appraisal/Partials/ApproverSection.vue";
-
+import SelectAppraiseeModal from "@/views/Appraisal/Modals/SelectAppraiseeModal.vue";
 const app = createApp(App);
 
 app.use(createPinia());
@@ -38,5 +38,6 @@ app.component("UserSearch", UserSearch);
 app.component("AppraiseeSection", AppraiseeSection);
 app.component("AppraiserSection", AppraiserSection);
 app.component("ApproverSection", ApproverSection);
+app.component("SelectAppraiseeModal", SelectAppraiseeModal);
 
 app.mount("#app");

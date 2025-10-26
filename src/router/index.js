@@ -77,6 +77,12 @@ const router = createRouter({
           beforeEnter: auth,
           component: () => import("@/views/Appraisal/ShowView.vue"),
         },
+        {
+          path: "appraisals/create",
+          name: "appraisals.create",
+          beforeEnter: auth,
+          component: () => import("@/views/Appraisal/CreateView.vue"),
+        },
       ],
     },
   ],

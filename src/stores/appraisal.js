@@ -8,13 +8,24 @@ export const useAppraisal = defineStore("appraisal", () => {
   const appraisal = ref();
 
   const form = reactive({
-    plate_number: "",
-    description: "",
+    appraisee: "",
+    appraiser: "",
+    approvers: [],
+
+    appraisee_id: "",
+    appraiser_id: "",
+    approver_ids: [],
+
   });
 
   function resetForm() {
-    form.plate_number = "";
-    form.description = "";
+    form.appraisee = "";
+    form.appraiser = "";  
+    form.approvers = [];
+
+    form.appraisee_id = "";
+    form.appraiser_id = "";
+    form.approver_ids = [];
 
     errors.value = {};
   }
