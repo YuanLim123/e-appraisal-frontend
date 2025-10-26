@@ -12,8 +12,9 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-8">
     <AppraiseeSection :appraisee="store.appraisal?.appraisee" />
     <AppraiserSection :appraiser="store.appraisal?.appraiser" />
+    <ApproverSection :approvers="store.appraisal?.approvers" />
   </div>
 </template>

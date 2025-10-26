@@ -4,7 +4,7 @@ const props = defineProps(["appraisee"]);
 <template>
   <section class="max-w-3xl lg:max-w-full">
     <h2 class="text-lg font-semibold">Appraisee</h2>
-    <div class="py-8 px-4 bg-white mb-4 rounded-lg">
+    <div class="py-4 px-4 bg-white rounded-lg">
       <div class="flex flex-col mt-2 gap-4">
         <div class="flex items-center gap-3">
           <p class="font-medium">Name:</p>

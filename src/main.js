@@ -19,6 +19,7 @@ import AppraisalRecordSection from "@/views/User/Partials/AppraisalRecordSection
 import UserSearch from "@/components/UserSearch.vue";
 import AppraiseeSection from "@/views/Appraisal/Partials/AppraiseeSection.vue";
 import AppraiserSection from "@/views/Appraisal/Partials/AppraiserSection.vue";
+import ApproverSection from "@/views/Appraisal/Partials/ApproverSection.vue";
 
 const app = createApp(App);
 
@@ -36,5 +37,6 @@ app.component("AppraisalRecordSection", AppraisalRecordSection);
 app.component("UserSearch", UserSearch);
 app.component("AppraiseeSection", AppraiseeSection);
 app.component("AppraiserSection", AppraiserSection);
+app.component("ApproverSection", ApproverSection);
 
 app.mount("#app");

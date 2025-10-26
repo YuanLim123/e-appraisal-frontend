@@ -30,6 +30,7 @@ export const useAppraisal = defineStore("appraisal", () => {
       })
       .then((response) => {
         appraisals.value = response.data;
+        console.log(appraisals.value);
       })
       .finally(() => {
         loading.value = false;
