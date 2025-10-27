@@ -21,6 +21,11 @@ import AppraiseeSection from "@/views/Appraisal/Partials/AppraiseeSection.vue";
 import AppraiserSection from "@/views/Appraisal/Partials/AppraiserSection.vue";
 import ApproverSection from "@/views/Appraisal/Partials/ApproverSection.vue";
 import SelectAppraiseeModal from "@/views/Appraisal/Modals/SelectAppraiseeModal.vue";
+import SelectAppraiserModal from "@/views/Appraisal/Modals/SelectAppraiseeModal.vue";
+import SelectApproverModal from "@/views/Appraisal/Modals/SelectApproverModal.vue";
+import UserSearchLite from "@/components/UserSearchLite.vue";
+import UserCard from "@/components/UserCard.vue";
+import ApproverCard from "@/components/ApproverCard.vue";
 const app = createApp(App);
 
 app.use(createPinia());
@@ -35,9 +40,13 @@ app.component("ClosedEyeIcon", ClosedEyeIcon);
 app.component("pulse-loader", PulseLoader);
 app.component("AppraisalRecordSection", AppraisalRecordSection);
 app.component("UserSearch", UserSearch);
+app.component("UserSearchLite", UserSearchLite);
 app.component("AppraiseeSection", AppraiseeSection);
 app.component("AppraiserSection", AppraiserSection);
 app.component("ApproverSection", ApproverSection);
 app.component("SelectAppraiseeModal", SelectAppraiseeModal);
-
+app.component("SelectAppraiserModal", SelectAppraiserModal);
+app.component("SelectApproverModal", SelectApproverModal);
+app.component("UserCard", UserCard);
+app.component("ApproverCard", ApproverCard);
 app.mount("#app");

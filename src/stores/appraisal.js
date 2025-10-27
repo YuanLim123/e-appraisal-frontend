@@ -14,18 +14,17 @@ export const useAppraisal = defineStore("appraisal", () => {
 
     appraisee_id: "",
     appraiser_id: "",
-    approver_ids: [],
-
+    approvers_temp: [],
   });
 
   function resetForm() {
     form.appraisee = "";
-    form.appraiser = "";  
+    form.appraiser = "";
     form.approvers = [];
 
     form.appraisee_id = "";
     form.appraiser_id = "";
-    form.approver_ids = [];
+    form.approvers_temp= [];
 
     errors.value = {};
   }
@@ -60,6 +59,72 @@ export const useAppraisal = defineStore("appraisal", () => {
         loading.value = false;
       });
   }
+
+  function setAppraisee(user) {
+    form.appraisee = user;
+  }
+
+  function removeAppraisee() {
+    form.appraisee = "";
+  }
+
+  function setAppraiser(user) {
+    form.appraiser = user;
+  }
+
+  function removeAppraiser() {
+    form.appraiser = "";
+  }
+
+  function addApprover(user) {
+    form.approvers_temp.push(user);
+  }
+
+  function removeApprover(user) {
+    form.approvers_temp = form.approvers_temp.filter((approver) => approver.id !== user.id);
+  }
+
+  function addAppraisal() {
+    if (loading.value) return;
+
+    loading.value = true;
+    errors.value = {};
+
+    // extract only ids to submit
+    form.appraisee_id = form.appraisee ? form.appraisee.id : "";
+    form.appraiser_id = form.appraiser ? form.appraiser.id : "";
+    form.approvers = form.approvers_temp.map((approver, idx) => {
+      return {
+        user_id: approver.id,
+        sequence: idx + 1,
+      };
+    });
+
+    window.axios
+      .post("hr/appraisals", form)
+      .then((response) => {
+        alert(response.data.message);
+        resetForm();
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 422) {
+          const errorData = error.response.data;
+
+          if (errorData.errors) {
+            errors.value = errorData.errors;
+          } else {
+            errors.value = errorData.message;
+          }
+
+          console.log(errors.value);
+        }
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
   return {
     form,
     errors,
@@ -69,5 +134,12 @@ export const useAppraisal = defineStore("appraisal", () => {
     resetForm,
     getAppraisals,
     getAppraisal,
+    setAppraisee,
+    setAppraiser,
+    removeAppraisee,
+    removeAppraiser,
+    addApprover,
+    removeApprover,
+    addAppraisal,
   };
 });

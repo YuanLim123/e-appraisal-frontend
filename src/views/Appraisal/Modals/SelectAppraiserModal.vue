@@ -25,7 +25,7 @@ const emit = defineEmits(["close", "select"]);
       <div class="relative p-4 bg-white rounded-lg shadow">
         <!-- Modal header -->
         <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5">
-          <h3 class="text-lg font-semibold text-gray-900">Select Appraisee</h3>
+          <h3 class="text-lg font-semibold text-gray-900">Select Appraiser</h3>
           <button
             type="button"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
