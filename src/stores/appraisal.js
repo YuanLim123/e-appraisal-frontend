@@ -24,40 +24,13 @@ export const useAppraisal = defineStore("appraisal", () => {
 
     form.appraisee_id = "";
     form.appraiser_id = "";
-    form.approvers_temp= [];
+    form.approvers_temp = [];
 
     errors.value = {};
   }
 
-  function getAppraisals(page = 1) {
-    loading.value = true;
-
-    window.axios
-      .get("hr/appraisals", {
-        params: {
-          page: page,
-        },
-      })
-      .then((response) => {
-        appraisals.value = response.data;
-        console.log(appraisals.value);
-      })
-      .finally(() => {
-        loading.value = false;
-      });
-  }
-
-  function getAppraisal(appraisal_id) {
-    loading.value = true;
-    window.axios
-      .get(`hr/appraisals/${appraisal_id}`)
-      .then((response) => {
-        appraisal.value = response.data.data;
-        console.log(appraisal.value);
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+  function resetError() {
+    errors.value = {};
   }
 
   function setAppraisee(user) {
@@ -84,13 +57,63 @@ export const useAppraisal = defineStore("appraisal", () => {
     form.approvers_temp = form.approvers_temp.filter((approver) => approver.id !== user.id);
   }
 
-  function addAppraisal() {
+  async function getAppraisals(page = 1) {
+    loading.value = true;
+
+    try {
+      const response = await window.axios.get("hr/appraisals", {
+        params: {
+          page: page,
+        },
+      });
+      appraisals.value = response.data;
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 422) {
+        const errorData = error.response.data;
+
+        if (errorData.errors) {
+          errors.value = errorData.errors;
+        } else {
+          errors.value = errorData.message;
+        }
+
+        console.log(errors.value);
+      }
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function getAppraisal(appraisal_id) {
+    loading.value = true;
+
+    try {
+      const response = await window.axios.get(`hr/appraisals/${appraisal_id}`);
+      appraisal.value = response.data.data;
+    } catch (error) {
+      if (error.response.status === 422) {
+        const errorData = error.response.data;
+
+        if (errorData.errors) {
+          errors.value = errorData.errors;
+        } else {
+          errors.value = errorData.message;
+        }
+
+        console.log(errors.value);
+      }
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function addAppraisal() {
     if (loading.value) return;
 
     loading.value = true;
     errors.value = {};
 
-    // extract only ids to submit
     form.appraisee_id = form.appraisee ? form.appraisee.id : "";
     form.appraiser_id = form.appraiser ? form.appraiser.id : "";
     form.approvers = form.approvers_temp.map((approver, idx) => {
@@ -100,29 +123,27 @@ export const useAppraisal = defineStore("appraisal", () => {
       };
     });
 
-    window.axios
-      .post("hr/appraisals", form)
-      .then((response) => {
-        alert(response.data.message);
-        resetForm();
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.status === 422) {
-          const errorData = error.response.data;
+    try {
+      const response = await window.axios.post("hr/appraisals", form);
+      alert(response.data.message);
+      resetForm();
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 422) {
+        const errorData = error.response.data;
 
-          if (errorData.errors) {
-            errors.value = errorData.errors;
-          } else {
-            errors.value = errorData.message;
-          }
-
-          console.log(errors.value);
+        if (errorData.errors) {
+          errors.value = errorData.errors;
+        } else {
+          errors.value = errorData.message;
         }
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+
+        console.log(errors.value);
+      }
+    } finally {
+      loading.value = false;
+    }
+
   }
 
   return {
@@ -132,6 +153,7 @@ export const useAppraisal = defineStore("appraisal", () => {
     appraisals,
     appraisal,
     resetForm,
+    resetError,
     getAppraisals,
     getAppraisal,
     setAppraisee,

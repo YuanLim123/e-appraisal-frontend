@@ -67,11 +67,11 @@ onMounted(() => {
 onMounted(() => {
   appraisalStore.resetForm();
 });
-
 </script>
 <template>
   <section>
     <div class="py-4 px-4 max-w-5xl">
+      <AlertMessage :errors="appraisalStore.errors" @closeAlert="appraisalStore.resetError" />
       <h2 class="mb-4 text-xl font-bold text-gray-900">Add a new Appraisal</h2>
       <form @submit.prevent="appraisalStore.addAppraisal" novalidate>
         <div class="flex flex-col mb-8">

@@ -3,18 +3,21 @@ import { watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import { useAppraisal } from "@/stores/appraisal";
 
-const store = useAppraisal();
+const appraisalStore = useAppraisal();
 const route = useRoute();
 
 watchEffect(async () => {
-  store.getAppraisal(route.params.id);
+  appraisalStore.getAppraisal(route.params.id);
 });
 </script>
 
 <template>
   <div class="flex flex-col gap-8">
-    <AppraiseeSection :appraisee="store.appraisal?.appraisee" />
-    <AppraiserSection :appraiser="store.appraisal?.appraiser" />
-    <ApproverSection :approvers="store.appraisal?.approvers" />
+    <div v-show="appraisalStore.loading" class="absolute inset-0 flex items-center justify-center">
+      <pulse-loader :loading="appraisalStore.loading"></pulse-loader>
+    </div>
+    <AppraiseeSection :appraisee="appraisalStore.appraisal?.appraisee" />
+    <AppraiserSection :appraiser="appraisalStore.appraisal?.appraiser" />
+    <ApproverSection :approvers="appraisalStore.appraisal?.approvers" />
   </div>
 </template>
