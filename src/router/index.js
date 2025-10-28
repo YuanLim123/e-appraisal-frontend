@@ -83,6 +83,12 @@ const router = createRouter({
           beforeEnter: auth,
           component: () => import("@/views/Appraisal/CreateView.vue"),
         },
+        {
+          path: "appraisals/edit/:id",
+          name: "appraisals.edit",
+          beforeEnter: auth,
+          component: () => import("@/views/Appraisal/EditView.vue"),
+        },
       ],
     },
   ],

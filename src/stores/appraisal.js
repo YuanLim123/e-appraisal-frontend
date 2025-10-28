@@ -10,21 +10,21 @@ export const useAppraisal = defineStore("appraisal", () => {
   const form = reactive({
     appraisee: "",
     appraiser: "",
-    approvers: [],
+    approvers_temp: [],
 
     appraisee_id: "",
     appraiser_id: "",
-    approvers_temp: [],
+    approvers: [],
   });
 
   function resetForm() {
     form.appraisee = "";
     form.appraiser = "";
-    form.approvers = [];
+    form.approvers_temp = [];
 
     form.appraisee_id = "";
     form.appraiser_id = "";
-    form.approvers_temp = [];
+    form.approvers = [];
 
     errors.value = {};
   }
@@ -91,6 +91,9 @@ export const useAppraisal = defineStore("appraisal", () => {
     try {
       const response = await window.axios.get(`hr/appraisals/${appraisal_id}`);
       appraisal.value = response.data.data;
+      form.appraisee = response.data.data.appraisee;
+      form.appraiser = response.data.data.appraiser;
+      form.approvers_temp = response.data.data.approvers.map((approver) => approver.user);
     } catch (error) {
       if (error.response.status === 422) {
         const errorData = error.response.data;
@@ -143,7 +146,42 @@ export const useAppraisal = defineStore("appraisal", () => {
     } finally {
       loading.value = false;
     }
+  }
 
+  async function updateAppraisal(appraisal) {
+    if (loading.value) return;
+
+    loading.value = true;
+    errors.value = {};
+
+    form.appraiser_id = form.appraiser ? form.appraiser.id : "";
+    form.approvers = form.approvers_temp.map((approver, idx) => {
+      return {
+        user_id: approver.id,
+        sequence: idx + 1,
+      };
+    });
+
+    try {
+      const response = await window.axios.put(`hr/appraisals/${appraisal.id}`, form);
+      alert(response.data.message);
+      resetForm();
+    } catch (error) {
+      console.log(error);
+      if (error.response.status === 422) {
+        const errorData = error.response.data;
+
+        if (errorData.errors) {
+          errors.value = errorData.errors;
+        } else {
+          errors.value = errorData.message;
+        }
+
+        console.log(errors.value);
+      }
+    } finally {
+      loading.value = false;
+    }
   }
 
   return {
@@ -163,5 +201,6 @@ export const useAppraisal = defineStore("appraisal", () => {
     addApprover,
     removeApprover,
     addAppraisal,
+    updateAppraisal,
   };
 });
