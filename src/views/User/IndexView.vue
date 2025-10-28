@@ -1,13 +1,22 @@
 <script setup>
 import { onMounted, computed } from "vue";
 import { useUser } from "@/stores/user";
+import { useDepartment } from "@/stores/department";
+import { usePosition } from "@/stores/position";
+import { useRole } from "@/stores/role";
 import { RouterLink } from "vue-router";
 import UserSearch from "@/components/UserSearch.vue";
 
 const store = useUser();
+const departmentStore = useDepartment();
+const positionStore = usePosition();
+const roleStore = useRole();
 
 onMounted(() => {
   store.getUsers();
+  departmentStore.getDepartments();
+  positionStore.getPositions();
+  roleStore.getRoles();
 });
 
 const hasEmptyRecords = computed(() => {
@@ -32,7 +41,12 @@ const hasEmptyRecords = computed(() => {
   </div>
   <section class="bg-gray-100 mb-4 rounded-lg">
     <div class="py-8 px-4">
-      <UserSearch />
+      <UserSearch
+        :roles="roleStore.roles"
+        :departments="departmentStore.departments"
+        :positions="positionStore.positions"
+        @search="store.getUsers"
+      />
     </div>
   </section>
 
@@ -52,9 +66,7 @@ const hasEmptyRecords = computed(() => {
       </thead>
       <tbody>
         <tr v-if="hasEmptyRecords">
-          <td colspan="5" class="text-center px-3 py-4 text-gray-500">
-            No user records found.
-          </td>
+          <td colspan="5" class="text-center px-3 py-4 text-gray-500">No user records found.</td>
         </tr>
         <tr
           v-for="user in store.users.data"

@@ -1,32 +1,19 @@
 <script setup>
-import { useDepartment } from "@/stores/department";
 import { useUser } from "@/stores/user";
-import { usePosition } from "@/stores/position";
-import { useRole } from "@/stores/role";
-import { onMounted, onUnmounted } from "vue";
+import { onUnmounted } from "vue";
+
+const props = defineProps(['departments', 'positions', 'roles']);
 
 const userStore = useUser();
-const departmentStore = useDepartment();
-const positionStore = usePosition();
-const roleStore = useRole();
-
-onMounted(() => {
-  departmentStore.getDepartments();
-  positionStore.getPositions();
-  roleStore.getRoles();
-});
 
 onUnmounted(() => {
   userStore.clearSearchForm();
 });
 
-function handleSearch() {
-  userStore.getUsers();
-}
 </script>
 <template>
   <div class="max-w-6xl lg:max-w-full">
-    <form @submit.prevent="handleSearch" novalidate>
+    <form @submit.prevent="$emit('search')" novalidate>
       <div class="grid sm:grid-cols-1 sm:gap-6 md:grid-cols-2 md:gap-4">
         <div class="w-full flex items-center mb-4">
           <label for="name" class="block mb-2 text-sm font-medium w-32 text-gray-900 mr-6"
@@ -59,7 +46,7 @@ function handleSearch() {
           <Multiselect
             id="department"
             v-model="userStore.searchForm.department_id"
-            :options="departmentStore.departments"
+            :options="props.departments"
             :close-on-select="true"
             :clear-on-select="true"
             :preserve-search="true"
@@ -76,7 +63,7 @@ function handleSearch() {
           <Multiselect
             id="position"
             v-model="userStore.searchForm.position_id"
-            :options="positionStore.positions"
+            :options="props.positions"
             :close-on-select="true"
             :clear-on-select="true"
             :preserve-search="true"
@@ -93,7 +80,7 @@ function handleSearch() {
           <Multiselect
             id="role"
             v-model="userStore.searchForm.role_id"
-            :options="roleStore.roles"
+            :options="props.roles"
             :close-on-select="true"
             :clear-on-select="true"
             :preserve-search="true"
