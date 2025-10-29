@@ -1,7 +1,8 @@
 <script setup>
 import { computed } from "vue";
+import { RouterLink } from "vue-router";
 
-const props = defineProps(['appraisalRecords']);
+const props = defineProps(['appraisalRecords', 'user']);
 
 const hasEmptyRecords = computed(() => {
   return !props.appraisalRecords || props.appraisalRecords.length === 0;
@@ -10,7 +11,15 @@ const hasEmptyRecords = computed(() => {
 </script>
 <template>
   <section class="bg-white py-4 px-4 max-w-3xl">
-    <h2 class="mb-2">Appraisal Record</h2>
+    <div class="flex justify-between mb-2">
+      <h2>Appraisal Record</h2>
+      <RouterLink
+        :to="{ name: 'appraisalRecord.create', params: { id: user?.id } }"
+        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+      >
+        Add
+      </RouterLink>
+    </div>
     <table class="w-full text-sm text-left rtl:text-right">
       <thead class="text-xs text-gray-700 uppercase bg-gray-100">
         <tr>

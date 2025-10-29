@@ -89,6 +89,12 @@ const router = createRouter({
           beforeEnter: auth,
           component: () => import("@/views/Appraisal/EditView.vue"),
         },
+        {
+          path: "users/:id/appraisal-record/create",
+          name: "appraisalRecord.create",
+          beforeEnter: auth,
+          component: () => import("@/views/AppraisalRecord/CreateView.vue"),
+        }
       ],
     },
   ],

@@ -6,13 +6,12 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
   const loading = ref(false);
   const departments = ref([]);
   const form = reactive({
-    plate_number: "",
-    description: "",
+    purpose: "",
+
   });
 
   function resetForm() {
-    form.plate_number = "";
-    form.description = "";
+
 
     errors.value = {};
   }
