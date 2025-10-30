@@ -27,4 +27,8 @@
   .btn-primary {
     @apply text-white bg-blue-600 hover:bg-blue-500;
   }
+
+  .table-input {
+    @apply border-none w-full h-full resize-y bg-transparent px-2 py-2 focus:ring-0;
+  }
 }
