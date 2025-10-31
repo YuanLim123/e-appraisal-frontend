@@ -1,24 +1,31 @@
 import { reactive, ref } from "vue";
 import { defineStore } from "pinia";
-import Question from "@/Appraisal.js";
+import Question from "@/qustions/Appraisal.js";
+import SupervisionAppraisalQuestion from "@/qustions/SupervisionAppraisal.js";
 
 export const useAppraisalRecord = defineStore("appraisalRecord", () => {
   const errors = reactive({});
   const loading = ref(false);
   const departments = ref([]);
   const isSectionOneInitialized = ref(false);
-  const totalPointsAttainableForPerformance = 100;
+  const isSectionThreeEnabled = ref(false);
 
   const form = reactive({
     purpose: "",
     sectionOnePerformances: [],
     scorePecenTageForSectionOne: 0,
-    sectionTwoAnswers: Question.Question.map(() => {
+    sectionTwoAnswers: SupervisionAppraisalQuestion.SectionTwo.map(() => {
       return {
         rate: 3,
         comment: "",
       };
     }),
+    sectionThreeAnswers: SupervisionAppraisalQuestion.SectionThree.map(() => {
+      return {
+        rate: 3,
+        comment: "",
+      }
+    })
   });
 
   function resetForm() {
@@ -62,7 +69,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     form.sectionOnePerformances.splice(index, 1);
   }
 
-  function calculateScorePercentageForSectionOne() {
+  function calculateScorePercentage() {
     let totalRating = 0;
     form.sectionOnePerformances.forEach((performance) => {
       const rating = parseFloat(performance.rating);
@@ -74,18 +81,23 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     form.scorePecenTageForSectionOne = totalRating;
   }
 
+  function toggleSectionThree() {
+    isSectionThreeEnabled.value = !isSectionThreeEnabled.value;
+  }
+
   return {
     form,
     errors,
     loading,
     departments,
     isSectionOneInitialized,
-    totalPointsAttainableForPerformance,
+    isSectionThreeEnabled,
     resetForm,
     getDepartments,
     initializePerformances,
     addPerformance,
     removePerformance,
-    calculateScorePercentageForSectionOne,
+    calculateScorePercentage,
+    toggleSectionThree,
   };
 });

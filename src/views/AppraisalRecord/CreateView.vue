@@ -1,15 +1,18 @@
 <script setup>
 import { useAppraisalRecord } from "@/stores/appraisalRecord";
-import { computed, onMounted } from "vue";
-import Question from "@/Appraisal.js";
+import { computed, onMounted, ref, watch } from "vue";
+import SupervisionAppraisalQuestion from "@/qustions/SupervisionAppraisal.js";
 
 const appraisalRecordStore = useAppraisalRecord();
+const totalPointsAttainableForSectionOne = 100;
+const totalPointsAttainableForSectionTwo = 75;
+const totalPointsAttainableForSectionThree = 40;
 
 onMounted(() => {
   appraisalRecordStore.initializePerformances();
 });
 
-const currentPointsAwarded = computed(() => {
+const currentSectionOnePointsAwarded = computed(() => {
   let score = 0;
   appraisalRecordStore.form.sectionOnePerformances.forEach((performance) => {
     const rating = parseFloat(performance.rating);
@@ -23,16 +26,64 @@ const currentPointsAwarded = computed(() => {
   return score;
 });
 
-const currentScorePercentage = computed(() => {
-  if (currentPointsAwarded.value === "Not valid") {
+const currentSectionOneScorePercentage = computed(() => {
+  if (currentSectionOnePointsAwarded.value === "Not valid") {
     return "Not valid";
   }
 
   return (
-    (
-      (currentPointsAwarded.value / appraisalRecordStore.totalPointsAttainableForPerformance) *
-      100
-    ).toFixed(2) + "%"
+    ((currentSectionOnePointsAwarded.value / totalPointsAttainableForSectionOne) * 100).toFixed(2) +
+    "%"
+  );
+});
+
+const currentSectionTwoPointsAwarded = computed(() => {
+  let score = 0;
+  appraisalRecordStore.form.sectionTwoAnswers.forEach((answer) => {
+    const rating = parseFloat(answer.rate);
+    if (!isNaN(rating)) {
+      score += rating;
+    }
+  });
+  if (score > 100) {
+    return "Not valid";
+  }
+  return score;
+});
+
+const currentSectionTwoScorePercentage = computed(() => {
+  if (currentSectionTwoPointsAwarded.value === "Not valid") {
+    return "Not valid";
+  }
+
+  return (
+    ((currentSectionTwoPointsAwarded.value / totalPointsAttainableForSectionTwo) * 100).toFixed(2) +
+    "%"
+  );
+});
+
+const currentSectionThreePointsAwarded = computed(() => {
+  let score = 0;
+  appraisalRecordStore.form.sectionThreeAnswers.forEach((answer) => {
+    const rating = parseFloat(answer.rate);
+    if (!isNaN(rating)) {
+      score += rating;
+    }
+  });
+  if (score > 100) {
+    return "Not valid";
+  }
+  return score;
+});
+
+const currentSectionThreeScorePercentage = computed(() => {
+  if (currentSectionThreePointsAwarded.value === "Not valid") {
+    return "Not valid";
+  }
+
+  return (
+    ((currentSectionThreePointsAwarded.value / totalPointsAttainableForSectionThree) * 100).toFixed(2) +
+    "%"
   );
 });
 </script>
@@ -157,9 +208,9 @@ const currentScorePercentage = computed(() => {
             </tbody>
           </table>
           <div class="flex justify-between">
-            <p>Points awarded: {{ currentPointsAwarded }}</p>
-            <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForPerformance }}</p>
-            <p>Score 1 Score Percentage: {{ currentScorePercentage }}</p>
+            <p>Points awarded: {{ currentSectionOnePointsAwarded }}</p>
+            <p>Total Attainable: {{ totalPointsAttainableForSectionOne }}</p>
+            <p>Score I Percentage: {{ currentSectionOneScorePercentage }}</p>
           </div>
         </div>
       </div>
@@ -169,14 +220,16 @@ const currentScorePercentage = computed(() => {
           <table class="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 bg-gray-50">
               <tr>
-                <th scope="col" class="border px-6 py-3 w-xl">QUALITIES AFFECTING PERFORMANCE</th>
-                <th scope="col" class="border px-6 py-3">RATING</th>
-                <th scope="col" class="border px-6 py-3">COMMENTS</th>
+                <th scope="col" class="border px-6 py-3 w-xl uppercase">
+                  QUALITIES AFFECTING PERFORMANCE
+                </th>
+                <th scope="col" class="border px-6 py-3 uppercase">RATING</th>
+                <th scope="col" class="border px-6 py-3 uppercase">COMMENTS</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                v-for="(ques, idx) in Question.Question"
+                v-for="(ques, idx) in SupervisionAppraisalQuestion.SectionTwo"
                 :key="idx"
                 class="odd:bg-white even:bg-gray-50 border-b border-gray-200"
               >
@@ -250,6 +303,116 @@ const currentScorePercentage = computed(() => {
               </tr>
             </tbody>
           </table>
+          <div class="flex justify-between">
+            <p>Points awarded: {{ currentSectionTwoPointsAwarded }}</p>
+            <p>Total Attainable: {{ totalPointsAttainableForSectionTwo }}</p>
+            <p>Score II Percentage: {{ currentSectionTwoScorePercentage }}</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="flex gap-2 mb-2 items-center">
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" value="" class="sr-only peer" v-model="appraisalRecordStore.isSectionThreeEnabled" />
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+            ></div>
+          </label>
+          <p class="text-sm font-medium">SECTION III</p>
+          <p class="uppercase">(applicable to sales, supervisors & managers only)</p>
+        </div>
+        <div class="overflow-x-auto" v-show="appraisalRecordStore.isSectionThreeEnabled">
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead class="text-xs text-gray-700 bg-gray-50">
+              <tr>
+                <th scope="col" class="border px-6 py-3 w-xl uppercase">
+                  PERFORMANCE FACTORS APPLICABLE
+                </th>
+                <th scope="col" class="border px-6 py-3 uppercase">RATING</th>
+                <th scope="col" class="border px-6 py-3 uppercase">COMMENTS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(ques, idx) in SupervisionAppraisalQuestion.SectionThree"
+                :key="idx"
+                class="odd:bg-white even:bg-gray-50 border-b border-gray-200"
+              >
+                <td class="border">
+                  <div class="p-2">
+                    <p class="font-medium underline">
+                      <span class="inline-block italic text-xs font-light mr-1">{{ idx + 1 }}</span>
+                      {{ ques.title }}
+                    </p>
+
+                    <p class="font-light text-sm">{{ ques.subtitle }}</p>
+                  </div>
+                </td>
+                <td class="border">
+                  <div class="flex justify-around">
+                    <div>
+                      <input
+                        type="radio"
+                        id="one"
+                        value="1"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                      />
+                      <label for="one">1</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="two"
+                        value="2"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                      />
+                      <label for="two">2</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="three"
+                        value="3"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                      />
+                      <label for="three">3</label>
+                    </div>
+
+                    <div>
+                      <input
+                        type="radio"
+                        id="four"
+                        value="4"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                      />
+                      <label for="four">4</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="five"
+                        value="5"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                      />
+                      <label for="fiv">5</label>
+                    </div>
+                  </div>
+                </td>
+                <td class="border">
+                  <textarea
+                    type="text"
+                    class="table-input"
+                    v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].comment"
+                  ></textarea>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex justify-between">
+            <p>Points awarded: {{ currentSectionThreePointsAwarded }}</p>
+            <p>Total Attainable: {{ totalPointsAttainableForSectionThree }}</p>
+            <p>Score III Percentage: {{ currentSectionThreeScorePercentage }}</p>
+          </div>
         </div>
       </div>
     </form>
