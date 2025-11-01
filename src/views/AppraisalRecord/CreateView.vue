@@ -1,97 +1,51 @@
 <script setup>
 import { useAppraisalRecord } from "@/stores/appraisalRecord";
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
 import SupervisionAppraisalQuestion from "@/qustions/SupervisionAppraisal.js";
 
 const appraisalRecordStore = useAppraisalRecord();
-const totalPointsAttainableForSectionOne = 100;
-const totalPointsAttainableForSectionTwo = 75;
-const totalPointsAttainableForSectionThree = 40;
+const route = useRoute();
 
 onMounted(() => {
-  appraisalRecordStore.initializePerformances();
+  appraisalRecordStore.initializeSectionOneAnswers();
 });
 
-const currentSectionOnePointsAwarded = computed(() => {
-  let score = 0;
-  appraisalRecordStore.form.sectionOnePerformances.forEach((performance) => {
-    const rating = parseFloat(performance.rating);
-    if (!isNaN(rating)) {
-      score += rating;
-    }
-  });
-  if (score > 100) {
-    return "Not valid";
-  }
-  return score;
-});
+watch(
+  () => appraisalRecordStore.form.sectionOneAnswers,
+  () => {
+    appraisalRecordStore.calculateSectionOneScore();
+    appraisalRecordStore.calculateSectionOnePercentage();
+  },
+  { deep: true },
+);
 
-const currentSectionOneScorePercentage = computed(() => {
-  if (currentSectionOnePointsAwarded.value === "Not valid") {
-    return "Not valid";
-  }
+watch(
+  () => appraisalRecordStore.form.sectionTwoAnswers,
+  () => {
+    appraisalRecordStore.calculateSectionTwoScore();
+    appraisalRecordStore.calculateSectionTwoPercentage();
+  },
+  { deep: true },
+);
 
-  return (
-    ((currentSectionOnePointsAwarded.value / totalPointsAttainableForSectionOne) * 100).toFixed(2) +
-    "%"
-  );
-});
-
-const currentSectionTwoPointsAwarded = computed(() => {
-  let score = 0;
-  appraisalRecordStore.form.sectionTwoAnswers.forEach((answer) => {
-    const rating = parseFloat(answer.rate);
-    if (!isNaN(rating)) {
-      score += rating;
-    }
-  });
-  if (score > 100) {
-    return "Not valid";
-  }
-  return score;
-});
-
-const currentSectionTwoScorePercentage = computed(() => {
-  if (currentSectionTwoPointsAwarded.value === "Not valid") {
-    return "Not valid";
-  }
-
-  return (
-    ((currentSectionTwoPointsAwarded.value / totalPointsAttainableForSectionTwo) * 100).toFixed(2) +
-    "%"
-  );
-});
-
-const currentSectionThreePointsAwarded = computed(() => {
-  let score = 0;
-  appraisalRecordStore.form.sectionThreeAnswers.forEach((answer) => {
-    const rating = parseFloat(answer.rate);
-    if (!isNaN(rating)) {
-      score += rating;
-    }
-  });
-  if (score > 100) {
-    return "Not valid";
-  }
-  return score;
-});
-
-const currentSectionThreeScorePercentage = computed(() => {
-  if (currentSectionThreePointsAwarded.value === "Not valid") {
-    return "Not valid";
-  }
-
-  return (
-    ((currentSectionThreePointsAwarded.value / totalPointsAttainableForSectionThree) * 100).toFixed(2) +
-    "%"
-  );
-});
+watch(
+  () => appraisalRecordStore.form.sectionThreeAnswers,
+  () => {
+    appraisalRecordStore.calculateSectionThreeScore();
+    appraisalRecordStore.calculateSectionThreePercentage();
+  },
+  { deep: true },
+);
 </script>
 
 <template>
   <div class="py-4 px-4">
     <h2 class="mb-4 text-xl font-bold text-gray-900">Appraisal record</h2>
-    <form class="flex flex-col gap-8" novalidate>
+    <form
+      class="flex flex-col gap-8"
+      @submit.prevent="appraisalRecordStore.addAppraisalRecord({ id: route.params.id })"
+    >
       <div class="w-2xl flex justify-between items-center">
         <p class="text-sm font-medium text-gray-900">Period of Review</p>
         <div class="flex gap-8">
@@ -101,6 +55,7 @@ const currentSectionThreeScorePercentage = computed(() => {
               type="date"
               name="period_from"
               id="period_from"
+              v-model="appraisalRecordStore.form.review_from"
               required
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             />
@@ -111,6 +66,7 @@ const currentSectionThreeScorePercentage = computed(() => {
               type="date"
               name="period_to"
               id="period_to"
+              v-model="appraisalRecordStore.form.review_to"
               required
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
             />
@@ -142,7 +98,7 @@ const currentSectionThreeScorePercentage = computed(() => {
       <div>
         <div class="flex justify-between items-start mb-2">
           <p class="mb-2 text-sm font-medium">SECTION I</p>
-          <button class="p-2 border" @click.prevent="appraisalRecordStore.addPerformance">
+          <button class="p-2 border" @click.prevent="appraisalRecordStore.addSectionOneAnswer">
             Add
           </button>
         </div>
@@ -183,23 +139,33 @@ const currentSectionThreeScorePercentage = computed(() => {
             </thead>
             <tbody>
               <tr
-                v-for="(performance, idx) in appraisalRecordStore.form.sectionOnePerformances"
+                v-for="(answer, idx) in appraisalRecordStore.form.sectionOneAnswers"
                 :key="idx"
                 class="odd:bg-white even:bg-gray-50 border-b border-gray-200"
               >
                 <td class="border">
-                  <textarea type="text" class="table-input" v-model="performance.goal"></textarea>
+                  <textarea
+                    type="text"
+                    class="table-input"
+                    v-model="answer.goal"
+                    required
+                  ></textarea>
                 </td>
                 <td class="border">
-                  <textarea type="text" class="table-input" v-model="performance.result"></textarea>
+                  <textarea
+                    type="text"
+                    class="table-input"
+                    v-model="answer.result"
+                    required
+                  ></textarea>
                 </td>
                 <td class="border">
-                  <input type="number" class="table-input" v-model="performance.rating" />
+                  <input type="number" class="table-input" v-model="answer.rating" required />
                 </td>
                 <td class="border p-2">
                   <button
                     class="p-2 border"
-                    @click.prevent="appraisalRecordStore.removePerformance(idx)"
+                    @click.prevent="appraisalRecordStore.removeSectionOneAnswer(idx)"
                   >
                     Remove
                   </button>
@@ -208,9 +174,9 @@ const currentSectionThreeScorePercentage = computed(() => {
             </tbody>
           </table>
           <div class="flex justify-between">
-            <p>Points awarded: {{ currentSectionOnePointsAwarded }}</p>
-            <p>Total Attainable: {{ totalPointsAttainableForSectionOne }}</p>
-            <p>Score I Percentage: {{ currentSectionOneScorePercentage }}</p>
+            <p>Points awarded: {{ appraisalRecordStore.form.scoreForSectionOne }}</p>
+            <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionOne }}</p>
+            <p>Score I Percentage: {{ appraisalRecordStore.form.scorePercentageForSectionOne }}</p>
           </div>
         </div>
       </div>
@@ -250,7 +216,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="one"
                         value="1"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
                       />
                       <label for="one">1</label>
                     </div>
@@ -259,7 +225,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="two"
                         value="2"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
                       />
                       <label for="two">2</label>
                     </div>
@@ -268,7 +234,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="three"
                         value="3"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
                       />
                       <label for="three">3</label>
                     </div>
@@ -278,7 +244,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="four"
                         value="4"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
                       />
                       <label for="four">4</label>
                     </div>
@@ -287,7 +253,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="five"
                         value="5"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
                       />
                       <label for="fiv">5</label>
                     </div>
@@ -304,16 +270,21 @@ const currentSectionThreeScorePercentage = computed(() => {
             </tbody>
           </table>
           <div class="flex justify-between">
-            <p>Points awarded: {{ currentSectionTwoPointsAwarded }}</p>
-            <p>Total Attainable: {{ totalPointsAttainableForSectionTwo }}</p>
-            <p>Score II Percentage: {{ currentSectionTwoScorePercentage }}</p>
+            <p>Points awarded: {{ appraisalRecordStore.form.scoreForSectionTwo }}</p>
+            <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionTwo }}</p>
+            <p>Score II Percentage: {{ appraisalRecordStore.form.scorePercentageForSectionTwo }}</p>
           </div>
         </div>
       </div>
       <div>
         <div class="flex gap-2 mb-2 items-center">
           <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" value="" class="sr-only peer" v-model="appraisalRecordStore.isSectionThreeEnabled" />
+            <input
+              type="checkbox"
+              value=""
+              class="sr-only peer"
+              v-model="appraisalRecordStore.isSectionThreeEnabled"
+            />
             <div
               class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
             ></div>
@@ -355,7 +326,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="one"
                         value="1"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
                       />
                       <label for="one">1</label>
                     </div>
@@ -364,7 +335,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="two"
                         value="2"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
                       />
                       <label for="two">2</label>
                     </div>
@@ -373,7 +344,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="three"
                         value="3"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
                       />
                       <label for="three">3</label>
                     </div>
@@ -383,7 +354,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="four"
                         value="4"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
                       />
                       <label for="four">4</label>
                     </div>
@@ -392,7 +363,7 @@ const currentSectionThreeScorePercentage = computed(() => {
                         type="radio"
                         id="five"
                         value="5"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rate"
+                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
                       />
                       <label for="fiv">5</label>
                     </div>
@@ -409,11 +380,30 @@ const currentSectionThreeScorePercentage = computed(() => {
             </tbody>
           </table>
           <div class="flex justify-between">
-            <p>Points awarded: {{ currentSectionThreePointsAwarded }}</p>
-            <p>Total Attainable: {{ totalPointsAttainableForSectionThree }}</p>
-            <p>Score III Percentage: {{ currentSectionThreeScorePercentage }}</p>
+            <p>Points awarded: {{ appraisalRecordStore.form.scoreForSectionThree }}</p>
+            <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionThree }}</p>
+            <p>
+              Score III Percentage: {{ appraisalRecordStore.form.scorePercentageForSectionThree }}
+            </p>
           </div>
         </div>
+      </div>
+      <div class="flex place-content-end mt-4">
+        <button
+          type="button"
+          :disabled="appraisalRecordStore.loading"
+          class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          :disabled="appraisalRecordStore.loading"
+          class="flex justify-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+        >
+          <IconSpinner v-show="appraisalRecordStore.loading" />
+          Submit
+        </button>
       </div>
     </form>
   </div>
