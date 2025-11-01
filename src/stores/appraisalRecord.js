@@ -16,20 +16,20 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     review_from: "",
     review_to: "",
     purpose: "",
-    scorePercentageForSectionOne: 0,
-    scorePercentageForSectionTwo: 0,
-    scorePercentageForSectionThree: 0,
-    scoreForSectionOne: 0,
-    scoreForSectionTwo: 0,
-    scoreForSectionThree: 0,
-    sectionOneAnswers: [],
-    sectionTwoAnswers: SupervisionAppraisalQuestion.SectionTwo.map(() => {
+    score_percentage_for_section_one: 0,
+    score_percentage_for_section_two: 0,
+    score_percentage_for_section_three: 0,
+    score_for_section_one: 0,
+    score_for_section_two: 0,
+    score_for_section_three: 0,
+    section_one_answers: [],
+    section_two_answers: SupervisionAppraisalQuestion.SectionTwo.map(() => {
       return {
         rating: 3,
         comment: "",
       };
     }),
-    sectionThreeAnswers: SupervisionAppraisalQuestion.SectionThree.map(() => {
+    section_three_answers: SupervisionAppraisalQuestion.SectionThree.map(() => {
       return {
         rating: 3,
         comment: "",
@@ -43,20 +43,20 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     form.review_from = "";
     form.review_to = "";
     form.purpose = "";
-    form.scorePercentageForSectionOne = 0;
-    form.scorePercentageForSectionTwo = 0;
-    form.scorePercentageForSectionThree = 0;
-    form.scoreForSectionOne = 0;
-    form.scoreForSectionTwo = 0;
-    form.scoreForSectionThree = 0;
-    form.sectionOneAnswers = [];
-    form.sectionTwoAnswers = SupervisionAppraisalQuestion.SectionTwo.map(() => {
+    form.score_percentage_for_section_one = 0;
+    form.score_percentage_for_section_two = 0;
+    form.score_percentage_for_section_three = 0;
+    form.score_for_section_one = 0;
+    form.score_for_section_two = 0;
+    form.score_for_section_three = 0;
+    form.section_one_answers = [];
+    form.section_two_answers = SupervisionAppraisalQuestion.SectionTwo.map(() => {
       return {
         rating: 3,
         comment: "",
       };
     });
-    form.sectionThreeAnswers = SupervisionAppraisalQuestion.SectionThree.map(() => {
+    form.section_three_answers = SupervisionAppraisalQuestion.SectionThree.map(() => {
       return {
         rating: 3,
         comment: "",
@@ -80,7 +80,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     const numberOfInitialRowForSectionOne = 5;
 
     for (let index = 0; index < numberOfInitialRowForSectionOne; index++) {
-      form.sectionOneAnswers.push({
+      form.section_one_answers.push({
         goal: "",
         result: "",
         rating: 0,
@@ -91,7 +91,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
   }
 
   function addSectionOneAnswer() {
-    form.sectionOneAnswers.push({
+    form.section_one_answers.push({
       goal: "",
       result: "",
       rating: 0,
@@ -99,7 +99,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
   }
 
   function removeSectionOneAnswer(index) {
-    form.sectionOneAnswers.splice(index, 1);
+    form.section_one_answers.splice(index, 1);
   }
 
   function calculateTotalScore(answers) {
@@ -117,36 +117,36 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
   }
 
   function calculateSectionOneScore() {
-    form.scoreForSectionOne = calculateTotalScore(form.sectionOneAnswers);
+    form.score_for_section_one = calculateTotalScore(form.section_one_answers);
   }
 
   function calculateSectionTwoScore() {
-    form.scoreForSectionTwo = calculateTotalScore(form.sectionTwoAnswers);
+    form.score_for_section_two = calculateTotalScore(form.section_two_answers);
   }
 
   function calculateSectionThreeScore() {
-    form.scoreForSectionThree = calculateTotalScore(form.sectionThreeAnswers);
+    form.score_for_section_three = calculateTotalScore(form.section_three_answers);
   }
 
   function calculateSectionOnePercentage() {
-    const totalScore = form.scoreForSectionOne;
-    form.scorePercentageForSectionOne = (
+    const totalScore = form.score_for_section_one;
+    form.score_percentage_for_section_one = (
       (totalScore / totalPointsAttainableForSectionOne) *
       100
     ).toFixed(2);
   }
 
   function calculateSectionTwoPercentage() {
-    const totalScore = form.scoreForSectionTwo;
-    form.scorePercentageForSectionTwo = (
+    const totalScore = form.score_for_section_two;
+    form.score_percentage_for_section_two = (
       (totalScore / totalPointsAttainableForSectionTwo) *
       100
     ).toFixed(2);
   }
 
   function calculateSectionThreePercentage() {
-    const totalScore = form.scoreForSectionThree;
-    form.scorePercentageForSectionThree = (
+    const totalScore = form.score_for_section_three;
+    form.score_percentage_for_section_three = (
       (totalScore / totalPointsAttainableForSectionThree) *
       100
     ).toFixed(2);

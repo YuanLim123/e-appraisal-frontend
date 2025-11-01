@@ -12,7 +12,7 @@ onMounted(() => {
 });
 
 watch(
-  () => appraisalRecordStore.form.sectionOneAnswers,
+  () => appraisalRecordStore.form.section_one_answers,
   () => {
     appraisalRecordStore.calculateSectionOneScore();
     appraisalRecordStore.calculateSectionOnePercentage();
@@ -21,7 +21,7 @@ watch(
 );
 
 watch(
-  () => appraisalRecordStore.form.sectionTwoAnswers,
+  () => appraisalRecordStore.form.section_two_answers,
   () => {
     appraisalRecordStore.calculateSectionTwoScore();
     appraisalRecordStore.calculateSectionTwoPercentage();
@@ -30,7 +30,7 @@ watch(
 );
 
 watch(
-  () => appraisalRecordStore.form.sectionThreeAnswers,
+  () => appraisalRecordStore.form.section_three_answers,
   () => {
     appraisalRecordStore.calculateSectionThreeScore();
     appraisalRecordStore.calculateSectionThreePercentage();
@@ -139,7 +139,7 @@ watch(
             </thead>
             <tbody>
               <tr
-                v-for="(answer, idx) in appraisalRecordStore.form.sectionOneAnswers"
+                v-for="(answer, idx) in appraisalRecordStore.form.section_one_answers"
                 :key="idx"
                 class="odd:bg-white even:bg-gray-50 border-b border-gray-200"
               >
@@ -174,9 +174,9 @@ watch(
             </tbody>
           </table>
           <div class="flex justify-between">
-            <p>Points awarded: {{ appraisalRecordStore.form.scoreForSectionOne }}</p>
+            <p>Points awarded: {{ appraisalRecordStore.form.score_for_section_one }}</p>
             <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionOne }}</p>
-            <p>Score I Percentage: {{ appraisalRecordStore.form.scorePercentageForSectionOne }}</p>
+            <p>Score I Percentage: {{ appraisalRecordStore.form.score_percentage_for_section_one }}</p>
           </div>
         </div>
       </div>
@@ -216,7 +216,7 @@ watch(
                         type="radio"
                         id="one"
                         value="1"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_two_answers[idx].rating"
                       />
                       <label for="one">1</label>
                     </div>
@@ -225,7 +225,7 @@ watch(
                         type="radio"
                         id="two"
                         value="2"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_two_answers[idx].rating"
                       />
                       <label for="two">2</label>
                     </div>
@@ -234,7 +234,7 @@ watch(
                         type="radio"
                         id="three"
                         value="3"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_two_answers[idx].rating"
                       />
                       <label for="three">3</label>
                     </div>
@@ -244,7 +244,7 @@ watch(
                         type="radio"
                         id="four"
                         value="4"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_two_answers[idx].rating"
                       />
                       <label for="four">4</label>
                     </div>
@@ -253,9 +253,9 @@ watch(
                         type="radio"
                         id="five"
                         value="5"
-                        v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_two_answers[idx].rating"
                       />
-                      <label for="fiv">5</label>
+                      <label for="five">5</label>
                     </div>
                   </div>
                 </td>
@@ -263,16 +263,16 @@ watch(
                   <textarea
                     type="text"
                     class="table-input"
-                    v-model="appraisalRecordStore.form.sectionTwoAnswers[idx].comment"
+                    v-model="appraisalRecordStore.form.section_two_answers[idx].comment"
                   ></textarea>
                 </td>
               </tr>
             </tbody>
           </table>
           <div class="flex justify-between">
-            <p>Points awarded: {{ appraisalRecordStore.form.scoreForSectionTwo }}</p>
+            <p>Points awarded: {{ appraisalRecordStore.form.score_for_section_two }}</p>
             <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionTwo }}</p>
-            <p>Score II Percentage: {{ appraisalRecordStore.form.scorePercentageForSectionTwo }}</p>
+            <p>Score II Percentage: {{ appraisalRecordStore.form.score_percentage_for_section_two }}</p>
           </div>
         </div>
       </div>
@@ -326,7 +326,7 @@ watch(
                         type="radio"
                         id="one"
                         value="1"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_three_answers[idx].rating"
                       />
                       <label for="one">1</label>
                     </div>
@@ -335,7 +335,7 @@ watch(
                         type="radio"
                         id="two"
                         value="2"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_three_answers[idx].rating"
                       />
                       <label for="two">2</label>
                     </div>
@@ -344,7 +344,7 @@ watch(
                         type="radio"
                         id="three"
                         value="3"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_three_answers[idx].rating"
                       />
                       <label for="three">3</label>
                     </div>
@@ -354,7 +354,7 @@ watch(
                         type="radio"
                         id="four"
                         value="4"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_three_answers[idx].rating"
                       />
                       <label for="four">4</label>
                     </div>
@@ -363,7 +363,7 @@ watch(
                         type="radio"
                         id="five"
                         value="5"
-                        v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].rating"
+                        v-model="appraisalRecordStore.form.section_three_answers[idx].rating"
                       />
                       <label for="fiv">5</label>
                     </div>
@@ -373,17 +373,17 @@ watch(
                   <textarea
                     type="text"
                     class="table-input"
-                    v-model="appraisalRecordStore.form.sectionThreeAnswers[idx].comment"
+                    v-model="appraisalRecordStore.form.section_three_answers[idx].comment"
                   ></textarea>
                 </td>
               </tr>
             </tbody>
           </table>
           <div class="flex justify-between">
-            <p>Points awarded: {{ appraisalRecordStore.form.scoreForSectionThree }}</p>
+            <p>Points awarded: {{ appraisalRecordStore.form.score_for_section_three }}</p>
             <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionThree }}</p>
             <p>
-              Score III Percentage: {{ appraisalRecordStore.form.scorePercentageForSectionThree }}
+              Score III Percentage: {{ appraisalRecordStore.form.score_percentage_for_section_three }}
             </p>
           </div>
         </div>
