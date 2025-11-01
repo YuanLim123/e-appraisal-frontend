@@ -6,11 +6,11 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
   const errors = reactive({});
   const loading = ref(false);
   const departments = ref([]);
-  const isSectionOneInitialized = ref(false);
-  const isSectionThreeEnabled = ref(false);
-  const totalPointsAttainableForSectionOne = 100;
-  const totalPointsAttainableForSectionTwo = 75;
-  const totalPointsAttainableForSectionThree = 40;
+  const is_section_one_initialized = ref(false);
+  const is_section_three_enabled = ref(false);
+  const total_points_attainable_for_section_one = 100;
+  const total_points_attainable_for_section_two = 75;
+  const total_points_attainable_for_section_three = 40;
 
   const form = reactive({
     review_from: "",
@@ -73,7 +73,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
   }
 
   function initializeSectionOneAnswers() {
-    if (isSectionOneInitialized.value) {
+    if (is_section_one_initialized.value) {
       return;
     }
 
@@ -87,7 +87,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
       });
     }
 
-    isSectionOneInitialized.value = true;
+    is_section_one_initialized.value = true;
   }
 
   function addSectionOneAnswer() {
@@ -130,30 +130,18 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
 
   function calculateSectionOnePercentage() {
     const totalScore = form.score_for_section_one;
-    form.score_percentage_for_section_one = (
-      (totalScore / totalPointsAttainableForSectionOne) *
-      100
-    ).toFixed(2);
+    form.score_percentage_for_section_one = (totalScore / total_points_attainable_for_section_one) * 100;
   }
 
   function calculateSectionTwoPercentage() {
     const totalScore = form.score_for_section_two;
-    form.score_percentage_for_section_two = (
-      (totalScore / totalPointsAttainableForSectionTwo) *
-      100
-    ).toFixed(2);
+    form.score_percentage_for_section_two = (totalScore / total_points_attainable_for_section_two) * 100;
   }
 
   function calculateSectionThreePercentage() {
     const totalScore = form.score_for_section_three;
-    form.score_percentage_for_section_three = (
-      (totalScore / totalPointsAttainableForSectionThree) *
-      100
-    ).toFixed(2);
-  }
-
-  function toggleSectionThree() {
-    isSectionThreeEnabled.value = !isSectionThreeEnabled.value;
+    form.score_percentage_for_section_three =
+      (totalScore / total_points_attainable_for_section_three) * 100;
   }
 
   function addAppraisalRecord(user) {
@@ -188,17 +176,16 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     errors,
     loading,
     departments,
-    isSectionOneInitialized,
-    isSectionThreeEnabled,
-    totalPointsAttainableForSectionOne,
-    totalPointsAttainableForSectionTwo,
-    totalPointsAttainableForSectionThree,
+    is_section_one_initialized,
+    is_section_three_enabled,
+    total_points_attainable_for_section_one,
+    total_points_attainable_for_section_two,
+    total_points_attainable_for_section_three,
     resetForm,
     getDepartments,
     initializeSectionOneAnswers,
     addSectionOneAnswer,
     removeSectionOneAnswer,
-    toggleSectionThree,
     calculateSectionOnePercentage,
     calculateSectionTwoPercentage,
     calculateSectionThreePercentage,

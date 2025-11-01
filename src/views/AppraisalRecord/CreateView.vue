@@ -175,7 +175,7 @@ watch(
           </table>
           <div class="flex justify-between">
             <p>Points awarded: {{ appraisalRecordStore.form.score_for_section_one }}</p>
-            <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionOne }}</p>
+            <p>Total Attainable: {{ appraisalRecordStore.total_points_attainable_for_section_one }}</p>
             <p>Score I Percentage: {{ appraisalRecordStore.form.score_percentage_for_section_one }}</p>
           </div>
         </div>
@@ -271,7 +271,7 @@ watch(
           </table>
           <div class="flex justify-between">
             <p>Points awarded: {{ appraisalRecordStore.form.score_for_section_two }}</p>
-            <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionTwo }}</p>
+            <p>Total Attainable: {{ appraisalRecordStore.total_points_attainable_for_section_two }}</p>
             <p>Score II Percentage: {{ appraisalRecordStore.form.score_percentage_for_section_two }}</p>
           </div>
         </div>
@@ -283,7 +283,7 @@ watch(
               type="checkbox"
               value=""
               class="sr-only peer"
-              v-model="appraisalRecordStore.isSectionThreeEnabled"
+              v-model="appraisalRecordStore.is_section_three_enabled"
             />
             <div
               class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
@@ -292,7 +292,7 @@ watch(
           <p class="text-sm font-medium">SECTION III</p>
           <p class="uppercase">(applicable to sales, supervisors & managers only)</p>
         </div>
-        <div class="overflow-x-auto" v-show="appraisalRecordStore.isSectionThreeEnabled">
+        <div class="overflow-x-auto" v-show="appraisalRecordStore.is_section_three_enabled">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 bg-gray-50">
               <tr>
@@ -381,7 +381,7 @@ watch(
           </table>
           <div class="flex justify-between">
             <p>Points awarded: {{ appraisalRecordStore.form.score_for_section_three }}</p>
-            <p>Total Attainable: {{ appraisalRecordStore.totalPointsAttainableForSectionThree }}</p>
+            <p>Total Attainable: {{ appraisalRecordStore.total_points_attainable_for_section_three }}</p>
             <p>
               Score III Percentage: {{ appraisalRecordStore.form.score_percentage_for_section_three }}
             </p>
