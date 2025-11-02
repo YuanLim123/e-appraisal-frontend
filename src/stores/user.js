@@ -37,7 +37,8 @@ export const useUser = defineStore("user", () => {
     department_id: "",
     position_id: "",
     role_id: "",
-    join_at: "",
+    join_before: "",
+    join_after: "",
   });
 
   function clearSearchForm() {
