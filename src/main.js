@@ -26,6 +26,10 @@ import SelectApproverModal from "@/views/Appraisal/Modals/SelectApproverModal.vu
 import UserSearchLite from "@/components/UserSearchLite.vue";
 import UserCard from "@/components/UserCard.vue";
 import ApproverCard from "@/components/ApproverCard.vue";
+import SectionOne from "@/views/AppraisalRecord/Partials/SectionOne.vue";
+import SectionTwo from "@/views/AppraisalRecord/Partials/SectionTwo.vue";
+import SectionThree from "@/views/AppraisalRecord/Partials/SectionThree.vue";
+import SectionFour from "@/views/AppraisalRecord/Partials/SectionFour.vue";
 const app = createApp(App);
 
 app.use(createPinia());
@@ -49,4 +53,8 @@ app.component("SelectAppraiserModal", SelectAppraiserModal);
 app.component("SelectApproverModal", SelectApproverModal);
 app.component("UserCard", UserCard);
 app.component("ApproverCard", ApproverCard);
+app.component("SectionOne", SectionOne);
+app.component("SectionTwo", SectionTwo);
+app.component("SectionThree", SectionThree);
+app.component("SectionFour", SectionFour);
 app.mount("#app");

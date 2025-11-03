@@ -156,7 +156,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     return parseFloat(value.toFixed(2));
   }
 
-  function addAppraisalRecord(user) {
+  async function addAppraisalRecord(user) {
     loading.value = true;
     errors.value = {};
 
@@ -166,11 +166,10 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
       form.score_percentage_for_section_two,
     ];
     try {
-      const response = window.axios.post("appraisal-records", form);
+      const response = await window.axios.post("appraisal-records", form);
       alert(response.data.message);
       resetForm();
     } catch (error) {
-      console.log(error);
       if (error.response.status === 422) {
         const errorData = error.response.data;
 
@@ -179,12 +178,10 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
         } else {
           errors.value = errorData.message;
         }
-
-        console.log(errors.value);
       }
     } finally {
       resetForm();
-      loading.value = false; 
+      loading.value = false;
     }
   }
 
