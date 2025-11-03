@@ -1,6 +1,6 @@
 <script setup>
 import { useAppraisalRecord } from "@/stores/appraisalRecord";
-import { onMounted, watch } from "vue";
+import { onMounted, onUnmounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import SupervisionAppraisalQuestion from "@/qustions/SupervisionAppraisal.js";
 
@@ -9,6 +9,10 @@ const route = useRoute();
 
 onMounted(() => {
   appraisalRecordStore.initializeSectionOneAnswers();
+});
+
+onUnmounted(() => {
+  appraisalRecordStore.resetForm();
 });
 
 watch(
@@ -77,21 +81,21 @@ watch(
         <p class="mb-2 text-sm font-medium">Purpose of Appraisal</p>
         <div class="flex gap-8">
           <div class="flex items-center gap-2">
-            <input type="radio" id="one" value="One" v-model="appraisalRecordStore.form.purpose" />
-            <label for="one">Confirmation / Promotion</label>
+            <input type="radio" id="confirmation" value="confirmation_or_promotion" v-model="appraisalRecordStore.form.purpose" />
+            <label for="confirmation">Confirmation / Promotion</label>
           </div>
           <div class="flex items-center gap-2">
-            <input type="radio" id="two" value="Two" v-model="appraisalRecordStore.form.purpose" />
-            <label for="two">Annual Review</label>
+            <input type="radio" id="annual" value="annual_review" v-model="appraisalRecordStore.form.purpose" />
+            <label for="annual">Annual Review</label>
           </div>
           <div class="flex items-center gap-2">
             <input
               type="radio"
-              id="three"
-              value="three"
+              id="special"
+              value="special_review"
               v-model="appraisalRecordStore.form.purpose"
             />
-            <label for="three">Special Review</label>
+            <label for="special">Special Review</label>
           </div>
         </div>
       </div>
@@ -283,7 +287,7 @@ watch(
               type="checkbox"
               value=""
               class="sr-only peer"
-              v-model="appraisalRecordStore.is_section_three_enabled"
+              v-model="appraisalRecordStore.form.is_section_three_enabled"
             />
             <div
               class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
@@ -292,7 +296,7 @@ watch(
           <p class="text-sm font-medium">SECTION III</p>
           <p class="uppercase">(applicable to sales, supervisors & managers only)</p>
         </div>
-        <div class="overflow-x-auto" v-show="appraisalRecordStore.is_section_three_enabled">
+        <div class="overflow-x-auto" v-show="appraisalRecordStore.form.is_section_three_enabled">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 bg-gray-50">
               <tr>
@@ -365,7 +369,7 @@ watch(
                         value="5"
                         v-model="appraisalRecordStore.form.section_three_answers[idx].rating"
                       />
-                      <label for="fiv">5</label>
+                      <label for="five">5</label>
                     </div>
                   </div>
                 </td>

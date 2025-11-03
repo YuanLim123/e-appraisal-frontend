@@ -7,7 +7,6 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
   const loading = ref(false);
   const departments = ref([]);
   const is_section_one_initialized = ref(false);
-  const is_section_three_enabled = ref(false);
   const total_points_attainable_for_section_one = 100;
   const total_points_attainable_for_section_two = 75;
   const total_points_attainable_for_section_three = 40;
@@ -19,6 +18,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     score_percentage_for_section_one: 0,
     score_percentage_for_section_two: 0,
     score_percentage_for_section_three: 0,
+    section_percentage: [],
     score_for_section_one: 0,
     score_for_section_two: 0,
     score_for_section_three: 0,
@@ -36,6 +36,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
       };
     }),
     appraisee_id: "",
+    is_section_three_enabled: false,
   });
 
   function resetForm() {
@@ -63,6 +64,8 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
       };
     });
     form.appraisee_id = "";
+    form.section_percentage = [];
+    is_section_one_initialized.value = false;
   }
 
   function getDepartments() {
@@ -77,7 +80,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
       return;
     }
 
-    const numberOfInitialRowForSectionOne = 5;
+    const numberOfInitialRowForSectionOne = 1;
 
     for (let index = 0; index < numberOfInitialRowForSectionOne; index++) {
       form.section_one_answers.push({
@@ -130,18 +133,27 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
 
   function calculateSectionOnePercentage() {
     const totalScore = form.score_for_section_one;
-    form.score_percentage_for_section_one = (totalScore / total_points_attainable_for_section_one) * 100;
+    form.score_percentage_for_section_one = roundToTwoDecimalPlaces(
+      (totalScore / total_points_attainable_for_section_one) * 100,
+    );
   }
 
   function calculateSectionTwoPercentage() {
     const totalScore = form.score_for_section_two;
-    form.score_percentage_for_section_two = (totalScore / total_points_attainable_for_section_two) * 100;
+    form.score_percentage_for_section_two = roundToTwoDecimalPlaces(
+      (totalScore / total_points_attainable_for_section_two) * 100,
+    );
   }
 
   function calculateSectionThreePercentage() {
     const totalScore = form.score_for_section_three;
-    form.score_percentage_for_section_three =
-      (totalScore / total_points_attainable_for_section_three) * 100;
+    form.score_percentage_for_section_three = roundToTwoDecimalPlaces(
+      (totalScore / total_points_attainable_for_section_three) * 100,
+    );
+  }
+
+  function roundToTwoDecimalPlaces(value) {
+    return parseFloat(value.toFixed(2));
   }
 
   function addAppraisalRecord(user) {
@@ -149,6 +161,10 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     errors.value = {};
 
     form.appraisee_id = user.id;
+    form.section_percentage = [
+      form.score_percentage_for_section_one,
+      form.score_percentage_for_section_two,
+    ];
     try {
       const response = window.axios.post("appraisal-records", form);
       alert(response.data.message);
@@ -167,7 +183,8 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
         console.log(errors.value);
       }
     } finally {
-      loading.value = false;
+      resetForm();
+      loading.value = false; 
     }
   }
 
@@ -177,7 +194,6 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     loading,
     departments,
     is_section_one_initialized,
-    is_section_three_enabled,
     total_points_attainable_for_section_one,
     total_points_attainable_for_section_two,
     total_points_attainable_for_section_three,
@@ -194,5 +210,6 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     calculateSectionTwoScore,
     calculateSectionThreeScore,
     addAppraisalRecord,
+    roundToTwoDecimalPlaces,
   };
 });
