@@ -21,7 +21,7 @@ watch(
     appraisalRecordStore.calculateSectionOneScore();
     appraisalRecordStore.calculateSectionOnePercentage();
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 watch(
@@ -30,7 +30,7 @@ watch(
     appraisalRecordStore.calculateSectionTwoScore();
     appraisalRecordStore.calculateSectionTwoPercentage();
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 watch(
@@ -39,13 +39,14 @@ watch(
     appraisalRecordStore.calculateSectionThreeScore();
     appraisalRecordStore.calculateSectionThreePercentage();
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 </script>
 
 <template>
   <div class="py-4 px-4">
     <h2 class="mb-4 text-xl font-bold text-gray-900">Appraisal record</h2>
+    <AlertMessage :errors="appraisalRecordStore.errors" @closeAlert="appraisalRecordStore.resetError"/>
     <form
       class="flex flex-col gap-8"
       @submit.prevent="appraisalRecordStore.addAppraisalRecord({ id: route.params.id })"
@@ -81,11 +82,21 @@ watch(
         <p class="mb-2 text-sm font-medium">Purpose of Appraisal</p>
         <div class="flex gap-8">
           <div class="flex items-center gap-2">
-            <input type="radio" id="confirmation" value="confirmation_or_promotion" v-model="appraisalRecordStore.form.purpose" />
+            <input
+              type="radio"
+              id="confirmation"
+              value="confirmation_or_promotion"
+              v-model="appraisalRecordStore.form.purpose"
+            />
             <label for="confirmation">Confirmation / Promotion</label>
           </div>
           <div class="flex items-center gap-2">
-            <input type="radio" id="annual" value="annual_review" v-model="appraisalRecordStore.form.purpose" />
+            <input
+              type="radio"
+              id="annual"
+              value="annual_review"
+              v-model="appraisalRecordStore.form.purpose"
+            />
             <label for="annual">Annual Review</label>
           </div>
           <div class="flex items-center gap-2">
@@ -100,8 +111,8 @@ watch(
         </div>
       </div>
       <SectionOne />
-      <SectionTwo :question="SupervisionAppraisalQuestion.SectionTwo"/>
-      <SectionThree :question="SupervisionAppraisalQuestion.SectionThree"/>
+      <SectionTwo :question="SupervisionAppraisalQuestion.SectionTwo" />
+      <SectionThree :question="SupervisionAppraisalQuestion.SectionThree" />
       <SectionFour />
       <div class="flex place-content-end mt-4">
         <button

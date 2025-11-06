@@ -68,6 +68,10 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     is_section_one_initialized.value = false;
   }
 
+  function resetError() {
+    errors.value = {};
+  }
+
   function getDepartments() {
     return window.axios.get("hr/departments").then((response) => {
       departments.value = response.data.data;
@@ -178,9 +182,10 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
         } else {
           errors.value = errorData.message;
         }
+
+        alert(errors.value);
       }
     } finally {
-      resetForm();
       loading.value = false;
     }
   }
@@ -195,6 +200,7 @@ export const useAppraisalRecord = defineStore("appraisalRecord", () => {
     total_points_attainable_for_section_two,
     total_points_attainable_for_section_three,
     resetForm,
+    resetError,
     getDepartments,
     initializeSectionOneAnswers,
     addSectionOneAnswer,
